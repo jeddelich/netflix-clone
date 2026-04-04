@@ -44,22 +44,22 @@ function Banner({ netflixOriginals }: Props) {
         </div>
 
         {/* Banner content */}
-        <div className="absolute top-80 md:top-1/2 lg:top-1/3 left-4 lg:left-16 z-10">
-          <h1 className="text-2xl md:text-4xl lg:text-7xl font-bold">
+        <div className="absolute top-1/3 sm:top-2/7 md:top-2/5 lg:top-1/3 left-4 lg:left-16 z-10">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">
             {movie?.title || movie?.name || movie?.original_name}
           </h1>
-          <p className="mt-2 max-w-xs text-xs md:max-w-lg md:text-lg lg:max-w-2xl lg:text-2xl text-shadow-md">
+          <p className="mt-2 max-w-xs text-xs sm:max-w-sm sm:text-sm md:max-w-lg md:text-lg lg:max-w-2xl lg:text-xl text-shadow-md">
             {movie?.overview}
           </p>
 
           <div className="flex space-x-3 mt-4">
-            <button className="banner__btn bg-white text-black">
-              <FaPlay className="h-4 w-4 md:h-7 md:w-7 text-black" />
+            <button className="banner__btn bg-white text-black cursor-not-allowed transition hover:opacity-75">
+              <FaPlay className="h-4 w-4 text-black" />
               Play
             </button>
-            <button className="banner__btn bg-[gray]/70 flex items-center gap-x-1">
+            <button className="banner__btn bg-[gray]/70 flex items-center gap-x-1 transition hover:bg-[gray]/55 cursor-not-allowed">
               More Info{" "}
-              <InformationCircleIcon className="h-5 w-5 md:h-8 md:w-8" />
+              <InformationCircleIcon className="h-5 w-5" />
             </button>
           </div>
         </div>
