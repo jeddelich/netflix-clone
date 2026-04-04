@@ -45,7 +45,7 @@ function Login() {
   };
 
   return (
-    <div className="relative flex h-screen w-screen flex-col bg-black md:items-center md:justify-center md:bg-transparent">
+    <div className="relative flex h-screen w-screen flex-col bg-black items-center md:justify-center md:bg-transparent overflow-x-hidden">
       <Head>
         <title>Home - Netflix</title>
         <link rel="icon" href="/favicon.ico" />
@@ -60,6 +60,7 @@ function Login() {
 
       <img
         src="https://rb.gy/ulxxee"
+        alt="Netflix logo"
         className="absolute left-4 top-4 cursor-pointer object-contain md:left-10 md:top-6"
         width={150}
         height={150}
@@ -69,9 +70,9 @@ function Login() {
         loginModal ? (
       <form
         onSubmit={handleSubmitSignIn(onSignIn)}
-        className="relative mt-24 space-y-8 rounded bg-black/75 py-10 px-6 md:mt-0 md:max-w-md md:px-14"
+        className="relative mt-24 space-y-8 rounded bg-black/75 py-7 lg:py-10 md:mt-0 min-w-[300px] sm:min-w-[400px] w-1/2 md:max-w-md px-10 lg:px-14"
       >
-        <h1 className="text-4xl font-semibold">Sign In</h1>
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold">Sign In</h1>
         <div className="space-y-4">
           <label className="inline-block w-full">
             <input
@@ -127,9 +128,9 @@ function Login() {
         ) : (
           <form
         onSubmit={handleSubmitSignUp(onSignUp)}
-        className="relative mt-24 space-y-8 rounded bg-black/75 py-10 px-6 md:mt-0 md:max-w-md md:px-14"
+        className="relative mt-24 space-y-8 rounded bg-black/75 py-7 lg:py-10 md:mt-0 min-w-[300px] sm:min-w-[400px] w-1/2 md:max-w-md px-6 md:px-10 lg:px-14"
       >
-        <h1 className="text-4xl font-semibold">Create Your Account</h1>
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold">Create Your Account</h1>
         <div className="space-y-4">
           <label className="inline-block w-full">
             <input
