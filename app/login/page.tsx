@@ -5,6 +5,7 @@ import Head from "next/head";
 import Image from "next/image";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 interface Inputs {
   email: string;
@@ -13,13 +14,17 @@ interface Inputs {
 
 function Login() {
   const [login, setLogin] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const {signIn, signUp} = useAuth() 
   
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<Inputs>();
+
+  const passwordValue = watch("password");
 
   const onSubmit: SubmitHandler<Inputs> = async ({email, password}) => {
     if (login) {
@@ -69,13 +74,22 @@ function Login() {
               </p>
             )}
           </label>
-          <label className="inline-block w-full">
+          <label className="inline-block w-full relative">
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Password"
               className="input"
               {...register("password", { required: true })}
             />
+            {
+              passwordValue && (
+                showPassword ? (
+                  <FaRegEyeSlash className="opacity-75 absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer hover:scale-95" onClick={() => setShowPassword(false)}/>
+                ) : (
+                  <FaRegEye className="opacity-75 absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer hover:scale-95" onClick={() => setShowPassword(true)} />
+                )
+              )
+            } 
             {errors.password && (
               <p className="p-1 text-[13px] font-light  text-orange-500">
                 Your password must contain between 4 and 60 characters.
@@ -85,7 +99,7 @@ function Login() {
         </div>
 
         <button 
-          className="w-full rounded bg-[#e50914] py-3 font-semibold" 
+          className="w-full rounded bg-[#e50914] py-3 font-semibold hover:bg-[#f6121d] cursor-pointer active:scale-95 transition duration-150" 
           onClick={() => setLogin(true)}
         >
           Sign In
@@ -93,8 +107,8 @@ function Login() {
 
         <div>
           New to Netflix?
-          <button type="submit" className="text-white hover:underline ml-2" onClick={() => setLogin(false)}>
-            Sign up now
+          <button type="submit" className="text-white hover:underline ml-2 cursor-pointer active:scale-95" onClick={() => setLogin(false)}>
+            Create an account
           </button>
         </div>
       </form>
