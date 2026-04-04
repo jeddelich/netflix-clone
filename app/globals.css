@@ -2,6 +2,10 @@
 
 @plugin 'tailwind-scrollbar';
 
+nextjs-portal {
+  display: none !important;
+}
+
 @layer base {
   body {
     @apply relative -z-50 bg-[#141414] text-white;

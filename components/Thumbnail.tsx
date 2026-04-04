@@ -8,13 +8,13 @@ interface Props {
 
 function Thumbnail({movie}: Props) {
   return (
-    <div className="relative h-28 min-w-45 cursor-pointer transition duration-200 ease-out md:h-36 md:min-w-65 md:hover:scale-105">
+    <div className="relative h-28 min-w-45 cursor-pointer transition duration-200 ease-out md:h-36 md:min-w-65 hover:scale-105">
         <Image
         src={`${baseUrl}${
           movie.backdrop_path || movie.poster_path
         }`}
         alt=""
-        className="rounded-sm object-cover md:rounded"
+        className="object-cover rounded-sm md:rounded"
         fill 
         sizes="25vw"
       />
