@@ -46,15 +46,15 @@ function Header() {
       </div>
 
       <div className="flex items-center space-x-4 text-sm font-light">
-        <MagnifyingGlassIcon className="hidden h-6 w-6 sm:inline cursor-pointer mt-0.5 " />
-        <p className="hidden lg:inline lg:text-2xl cursor-pointer">Kids</p>
-        <BellIcon className="h-6 w-6 mt-1 cursor-pointer" />
+        <MagnifyingGlassIcon className="h-6 w-6 cursor-pointer mt-0.5 " />
+        <p className="hidden lg:inline font-semibold md:text-xl cursor-pointer">Kids</p>
+        <BellIcon className="hidden h-6 w-6 mt-1 lg:inline cursor-pointer" />
         {/* <Link href="/account" onClick={}> */}
           <img
             onClick={logout}
             src="https://rb.gy/g1pwyx"
             alt=""
-            className="cursor-pointer rounded lg:h-10 lg:w-10"
+            className="cursor-pointer rounded lg:h-8 lg:w-8"
           />
         {/* </Link> */}
       </div>

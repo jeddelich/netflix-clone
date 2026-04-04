@@ -1,5 +1,5 @@
 import Banner from "@/components/Banner";
-import Header from "@/components/Header";
+import Navbar from "@/components/Navbar";
 import Row from "@/components/Row";
 import requests from "@/utils/requests";
 import Image from "next/image";
@@ -27,7 +27,7 @@ export default async function Home() {
 
   return (
     <div className="relative">
-      <Header />
+      <Navbar />
       <div className="relative">
         <main className="pb-24">
           <Banner netflixOriginals={netflixOriginals.results} />
