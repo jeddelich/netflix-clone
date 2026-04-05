@@ -42,7 +42,7 @@ function Row({ title, movies }: Props) {
 
         <div
           ref={rowRef}
-          className="scrollbar--remove flex items-center space-x-1.5 overflow-x-scroll md:space-x-2.5 md:p-2"
+          className="scrollbar--remove flex items-center space-x-1.5 overflow-x-scroll md:space-x-2.5 md:m-2"
         >
           {movies.map((movie: Movie) => (
             <Thumbnail key={movie.id} movie={movie} />
@@ -50,7 +50,7 @@ function Row({ title, movies }: Props) {
         </div>
 
         <ChevronRightIcon
-          className={`absolute top-0 bottom-0 right-2 z-40 m-auto h-9 w-9 cursor-pointer opacity-0 transition hover:scale-125 group-hover:opacity-100`}
+          className={`absolute top-1/2 transform -translate-y-1/2 right-2 z-40 m-auto h-36 w-9 cursor-pointer opacity-0 transition hover:scale-125 group-hover:opacity-100`}
           onClick={() => handleClick("right")}
         />
       </div>

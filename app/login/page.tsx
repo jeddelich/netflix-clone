@@ -5,7 +5,8 @@ import Head from "next/head";
 import Image from "next/image";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import SignInForm from "@/components/ui/SignInForm";
+import SignUpForm from "@/components/ui/SignUpForm";
 
 interface Inputs {
   email: string;
@@ -68,121 +69,33 @@ function Login() {
 
 {
         loginModal ? (
-      <form
-        onSubmit={handleSubmitSignIn(onSignIn)}
-        className="relative mt-24 space-y-8 rounded bg-black/75 py-7 lg:py-10 md:mt-0 min-w-[300px] sm:min-w-[400px] w-1/2 md:max-w-md px-10 lg:px-14"
-      >
-        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold">Sign In</h1>
-        <div className="space-y-4">
-          <label className="inline-block w-full">
-            <input
-              type="email"
-              placeholder="Email"
-              className="input"
-              {...registerSignIn("email", { required: true })}
-            />
-            {signInErrors.email && (
-              <p className="p-1 text-[13px] font-light  text-orange-500">
-                Please enter a valid email.
-              </p>
-            )}
-          </label>
-          <label className="inline-block w-full relative">
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="Password"
-              className="input"
-              {...registerSignIn("password", { required: true })}
-            />
-            {
-              signInPasswordValue && (
-                showPassword ? (
-                  <FaRegEyeSlash className="opacity-75 absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer hover:scale-95" onClick={() => setShowPassword(false)}/>
-                ) : (
-                  <FaRegEye className="opacity-75 absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer hover:scale-95" onClick={() => setShowPassword(true)} />
-                )
-              )
-            } 
-            {signInErrors.password && (
-              <p className="p-1 text-[13px] font-light  text-orange-500">
-                Your password must contain between 4 and 60 characters.
-              </p>
-            )}
-          </label>
-        </div>
-
-        <button 
-          type="submit"
-          className="w-full rounded bg-[#e50914] py-3 font-semibold hover:bg-[#f6121d] cursor-pointer active:scale-95 transition duration-150" 
-        >
-          Sign In
-        </button>
-
-        <div>
-          New to Netflix?
-          <button type="button" className="text-white hover:underline ml-2 cursor-pointer active:scale-95" onClick={() => { setLoginModal(false); resetSignUp(); }}>
-            Create an account
-          </button>
-        </div>
-      </form>
+      <SignInForm
+        register={registerSignIn}
+        handleSubmit={handleSubmitSignIn}
+        onSubmit={onSignIn}
+        errors={signInErrors}
+        passwordValue={signInPasswordValue}
+        showPassword={showPassword}
+        setShowPassword={setShowPassword}
+        onCreateAccount={() => {
+          setLoginModal(false);
+          resetSignUp();
+        }}
+      />
         ) : (
-          <form
-        onSubmit={handleSubmitSignUp(onSignUp)}
-        className="relative mt-24 space-y-8 rounded bg-black/75 py-7 lg:py-10 md:mt-0 min-w-[300px] sm:min-w-[400px] w-1/2 md:max-w-md px-6 md:px-10 lg:px-14"
-      >
-        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold">Create Your Account</h1>
-        <div className="space-y-4">
-          <label className="inline-block w-full">
-            <input
-              type="email"
-              placeholder="Email"
-              className="input"
-              {...registerSignUp("email", { required: true })}
-            />
-            {signUpErrors.email && (
-              <p className="p-1 text-[13px] font-light  text-orange-500">
-                Please enter a valid email.
-              </p>
-            )}
-          </label>
-          <label className="inline-block w-full relative">
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="Password"
-              className="input"
-              {...registerSignUp("password", { required: true })}
-            />
-            {
-              signUpPasswordValue && (
-                showPassword ? (
-                  <FaRegEyeSlash className="opacity-75 absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer hover:scale-95" onClick={() => setShowPassword(false)}/>
-                ) : (
-                  <FaRegEye className="opacity-75 absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer hover:scale-95" onClick={() => setShowPassword(true)} />
-                )
-              )
-            } 
-            {signUpErrors.password && (
-              <p className="p-1 text-[13px] font-light  text-orange-500">
-                Your password must contain between 4 and 60 characters.
-              </p>
-            )}
-          </label>
-        </div>
-
-        <button 
-         type="submit"
-          className="w-full rounded bg-[#e50914] py-3 font-semibold hover:bg-[#f6121d] cursor-pointer active:scale-95 transition duration-150" 
-        >
-          Sign Up
-        </button>
-
-        <div>
-          Already have an account?
-          <button type="button" className="text-white hover:underline ml-2 cursor-pointer active:scale-95" onClick={() => { setLoginModal(true); resetSignIn(); }}>
-            Sign in
-          </button>
-        </div>
-      </form>
+          <SignUpForm
+        register={registerSignUp}
+        handleSubmit={handleSubmitSignUp}
+        onSubmit={onSignUp}
+        errors={signUpErrors}
+        passwordValue={signUpPasswordValue}
+        showPassword={showPassword}
+        setShowPassword={setShowPassword}
+        onSignIn={() => {
+          setLoginModal(true);
+          resetSignIn();
+        }}
+      />
         )
         }
     </div>
