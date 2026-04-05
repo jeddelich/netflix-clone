@@ -1,6 +1,6 @@
-import Banner from "@/components/Banner";
-import Navbar from "@/components/Navbar";
-import Row from "@/components/Row";
+import MovieBanner from "@/components/ui/MovieBanner";
+import Navbar from "@/components/layout/Navbar";
+import Row from "@/components/layout/Row";
 import requests from "@/utils/requests";
 import Image from "next/image";
 
@@ -30,7 +30,7 @@ export default async function Home() {
       <Navbar />
       <div className="relative">
         <main className="pb-24">
-          <Banner netflixOriginals={netflixOriginals.results} />
+          <MovieBanner netflixOriginals={netflixOriginals.results} />
           <section className="pl-4 lg:pl-16 -mt-32 lg:-mt-48 md:mt-0">
             <Row title="Trending Now" movies={trendingNow.results} />
             <Row title="Top Rated" movies={topRated.results} />

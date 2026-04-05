@@ -2,7 +2,7 @@
 
 import { Movie } from "@/typings";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
-import Thumbnail from "./Thumbnail";
+import MovieThumbnail from "../ui/MovieThumbnail";
 import { useRef, useState } from "react";
 
 interface Props {
@@ -45,7 +45,7 @@ function Row({ title, movies }: Props) {
           className="scrollbar--remove flex items-center space-x-1.5 overflow-x-scroll md:space-x-2.5 md:m-2"
         >
           {movies.map((movie: Movie) => (
-            <Thumbnail key={movie.id} movie={movie} />
+            <MovieThumbnail key={movie.id} movie={movie} />
           ))}
         </div>
 

@@ -6,7 +6,7 @@ interface Props {
     movie: Movie
 }
 
-function Thumbnail({movie}: Props) {
+function MovieThumbnail({movie}: Props) {
   return (
     <div className="relative h-28 min-w-45 cursor-pointer transition duration-200 ease-out md:h-36 md:min-w-65 hover:scale-105">
         <Image
@@ -22,4 +22,4 @@ function Thumbnail({movie}: Props) {
   )
 }
 
-export default Thumbnail
+export default MovieThumbnail
