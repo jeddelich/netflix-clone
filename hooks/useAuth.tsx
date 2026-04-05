@@ -9,7 +9,14 @@ import {
 } from "firebase/auth";
 
 import { useRouter } from "next/navigation";
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { auth } from "../firebase";
 
 interface IAuth {
@@ -37,7 +44,7 @@ interface AuthProviderProps {
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<User | null>(null);
-  const [error, seterror] = useState(null);
+  const [error] = useState<string | null>(null);
   const [initialLoading, setInitialLoading] = useState(true);
   const router = useRouter();
 
@@ -57,10 +64,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
         setInitialLoading(false);
       }),
-    [auth],
+    [router],
   );
 
-  const signUp = async (email: string, password: string) => {
+  const signUp = useCallback(async (email: string, password: string) => {
     setLoading(true);
 
     await createUserWithEmailAndPassword(auth, email, password)
@@ -71,9 +78,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       })
       .catch((error) => alert(error.message))
       .finally(() => setLoading(false));
-  };
+  }, [router]);
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = useCallback(async (email: string, password: string) => {
     setLoading(true);
 
     await signInWithEmailAndPassword(auth, email, password)
@@ -84,9 +91,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       })
       .catch((error) => alert(error.message))
       .finally(() => setLoading(false));
-  };
+  }, [router]);
 
-  const logout = async () => {
+  const logout = useCallback(async () => {
     setLoading(true);
 
     signOut(auth)
@@ -95,7 +102,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       })
       .catch((error) => alert(error.message))
       .finally(() => setLoading(false));
-  };
+  }, []);
 
   const memoedValue = useMemo(
     () => ({
@@ -106,7 +113,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       logout,
       error,
     }),
-    [user, loading],
+    [user, signUp, signIn, loading, logout, error],
   );
 
   return (

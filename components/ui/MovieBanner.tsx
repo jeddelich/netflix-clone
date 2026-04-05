@@ -27,7 +27,7 @@ function MovieBanner({ netflixOriginals }: Props) {
         <div className="absolute top-0 left-0 w-full h-full -z-10">
           <Image
             src={`${baseUrl}${movie?.backdrop_path || movie?.poster_path}`}
-            alt=""
+            alt={movie?.title || movie?.name || movie?.original_name}
             fill
             style={{ objectFit: "cover" }}
             priority

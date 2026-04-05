@@ -2,7 +2,6 @@ import MovieBanner from "@/components/ui/MovieBanner";
 import Navbar from "@/components/layout/Navbar";
 import Row from "@/components/layout/Row";
 import requests from "@/utils/requests";
-import Image from "next/image";
 
 export default async function Home() {
   const [

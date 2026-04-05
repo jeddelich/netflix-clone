@@ -36,7 +36,7 @@ function SignInForm({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="relative mt-24 space-y-8 rounded bg-black/75 py-7 lg:py-10 md:mt-0 min-w-[300px] sm:min-w-[400px] w-1/2 md:max-w-md px-10 lg:px-14"
+      className="relative mt-24 space-y-8 rounded bg-black/75 py-7 lg:py-10 md:mt-0 min-w-75 sm:min-w-100 w-1/2 md:max-w-md px-10 lg:px-14"
     >
       <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold">Sign In</h1>
       <div className="space-y-4">

@@ -10,6 +10,15 @@
       },
       {
         hostname: 'assets.nflxext.com'
+      },
+      {
+        hostname: 'upload.wikimedia.org'
+      },
+      {
+        hostname: 'occ-0-1190-2774.1.nflxso.net'
+      },
+      {
+        hostname: 'i.ytimg.com'
       }
     ],  
   },

@@ -4,7 +4,7 @@ import useAuth from "@/hooks/useAuth";
 import Head from "next/head";
 import Image from "next/image";
 import { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm, useWatch } from "react-hook-form";
 import SignInForm from "@/components/ui/SignInForm";
 import SignUpForm from "@/components/ui/SignUpForm";
 
@@ -21,7 +21,7 @@ function Login() {
   const {
     register: registerSignIn,
     handleSubmit: handleSubmitSignIn,
-    watch: watchSignIn,
+    control: controlSignIn,
     reset: resetSignIn,
     formState: { errors: signInErrors },
   } = useForm<Inputs>();
@@ -29,13 +29,13 @@ function Login() {
   const {
     register: registerSignUp,
     handleSubmit: handleSubmitSignUp,
-    watch: watchSignUp,
+    control: controlSignUp,
     reset: resetSignUp,
     formState: { errors: signUpErrors },
   } = useForm<Inputs>();
 
-  const signInPasswordValue = watchSignIn("password");
-  const signUpPasswordValue = watchSignUp("password");
+  const signInPasswordValue = useWatch({ control: controlSignIn, name: "password" });
+  const signUpPasswordValue = useWatch({ control: controlSignUp, name: "password" });
 
   const onSignIn: SubmitHandler<Inputs> = async ({ email, password }) => {
     await signIn(email, password);
@@ -59,8 +59,8 @@ function Login() {
         alt=""
       />
 
-      <img
-        src="https://rb.gy/ulxxee"
+      <Image
+        src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg"
         alt="Netflix logo"
         className="absolute left-4 top-4 cursor-pointer object-contain md:left-10 md:top-6"
         width={150}
