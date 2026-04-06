@@ -16,6 +16,9 @@ interface ForgotPasswordFormProps {
   errors: FieldErrors<Inputs>;
   onSignIn: () => void;
   onSignUp: () => void;
+  statusMessage?: string;
+  statusType?: "success" | "error";
+  onEmailChange?: (value: string) => void;
 }
 
 function ForgotPasswordForm({
@@ -25,6 +28,9 @@ function ForgotPasswordForm({
   errors,
   onSignIn,
   onSignUp,
+  statusMessage,
+  statusType = "success",
+  onEmailChange,
 }: ForgotPasswordFormProps) {
   return (
     <form
@@ -39,12 +45,19 @@ function ForgotPasswordForm({
           <input
             type="email"
             placeholder="Email"
-            className="inputSignUp"
-            {...register("email", { required: true })}
+            className={`inputSignUp ${statusType === "error" ? "border-red-600! focus:border-red-600!" : ""}`}
+            {...register("email", {
+              required: true,
+              onChange: (event) => onEmailChange?.(event.target.value),
+            })}
           />
-          {errors.email && (
-            <p className="p-1 text-[13px] font-light  text-red-600">
-              Please enter a valid email.
+          {statusType === "success" ? (
+            <p className="p-1 text-[13px] font-light  text-gray-800 max-w-60">
+              {statusMessage}
+            </p>
+          ) : (
+            <p className="p-1 text-[13px] font-light  text-red-600 max-w-60">
+              {statusMessage}
             </p>
           )}
         </label>

@@ -5,6 +5,7 @@ import useModal, { AuthModal } from "@/contexts/ModalContext";
 import Head from "next/head";
 import Image from "next/image";
 import { useState } from "react";
+import { FirebaseError } from "firebase/app";
 import { SubmitHandler, useForm, useWatch } from "react-hook-form";
 import SignInForm from "@/components/ui/SignInForm";
 import SignUpForm from "@/components/ui/SignUpForm";
@@ -21,6 +22,8 @@ interface ForgotPasswordInputs {
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const [forgotPasswordStatusMessage, setForgotPasswordStatusMessage] = useState("");
+  const [forgotPasswordStatusType, setForgotPasswordStatusType] = useState<"success" | "error">("success");
   const { activeModal, setActiveModal } = useModal();
   const { signIn, signUp, resetPassword } = useAuth();
   
@@ -50,10 +53,18 @@ function Login() {
   const signInPasswordValue = useWatch({ control: controlSignIn, name: "password" });
   const signUpPasswordValue = useWatch({ control: controlSignUp, name: "password" });
 
+  const onForgotPasswordEmailChange = (value: string) => {
+    if (!value.trim()) {
+      setForgotPasswordStatusType("success");
+      setForgotPasswordStatusMessage("");
+    }
+  };
+
   const switchModal = (modal: AuthModal) => {
     resetSignIn();
     resetSignUp();
     resetForgotPassword();
+    setForgotPasswordStatusMessage("");
     setShowPassword(false);
     setActiveModal(modal);
   };
@@ -67,7 +78,22 @@ function Login() {
   };
 
   const onForgotPassword: SubmitHandler<ForgotPasswordInputs> = async ({ email }) => {
-    await resetPassword(email);
+    setForgotPasswordStatusMessage("");
+
+    try {
+      await resetPassword(email);
+      setForgotPasswordStatusType("success");
+      setForgotPasswordStatusMessage("If account exists, the reset link was sent. (Please check your inbox including spam)");
+    } catch (error) {
+      if (error instanceof FirebaseError && error.code === "auth/user-not-found") {
+        setForgotPasswordStatusType("error");
+        setForgotPasswordStatusMessage("No account associated with this email.");
+        return;
+      }
+
+      setForgotPasswordStatusType("error");
+      setForgotPasswordStatusMessage("Please enter a valid email.");
+    }
   };
 
   return (
@@ -126,6 +152,9 @@ function Login() {
           errors={forgotPasswordErrors}
           onSignIn={() => switchModal("sign-in")}
           onSignUp={() => switchModal("sign-up")}
+          statusMessage={forgotPasswordStatusMessage}
+          statusType={forgotPasswordStatusType}
+          onEmailChange={onForgotPasswordEmailChange}
         />
       )}
     </div>

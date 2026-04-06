@@ -99,12 +99,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const resetPassword = useCallback(async (email: string) => {
     setLoading(true);
 
-    await sendPasswordResetEmail(auth, email)
-      .then(() => {
-        alert("Password reset email sent.");
-      })
-      .catch((error) => alert(error.message))
-      .finally(() => setLoading(false));
+    try {
+      await sendPasswordResetEmail(auth, email);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   const logout = useCallback(async () => {
