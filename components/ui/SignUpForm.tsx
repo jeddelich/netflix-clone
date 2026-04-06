@@ -36,7 +36,7 @@ function SignUpForm({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="relative mt-24 space-y-8 rounded bg-gray-200 py-7 lg:py-10 md:mt-0 min-w-75 sm:min-w-100 w-1/2 md:max-w-md px-6 md:px-10 lg:px-14"
+      className="relative mt-24 space-y-8 rounded bg-gray-200 py-7 lg:py-10 md:mt-0 min-w-75 sm:min-w-100 w-1/2 md:max-w-md px-8 md:px-10 lg:px-14"
     >
       <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-black">Create Your Account</h1>
       <div className="space-y-4">
@@ -87,7 +87,7 @@ function SignUpForm({
         Sign Up
       </button>
 
-      <div className="text-black">
+      <div className="text-black text-sm sm:text-base">
         Already have an account?
         <button
           type="button"

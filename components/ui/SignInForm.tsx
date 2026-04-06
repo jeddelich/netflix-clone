@@ -87,7 +87,7 @@ function SignInForm({
         Sign In
       </button>
 
-      <div>
+      <div className="text-sm sm:text-base">
         New to Netflix?
         <button
           type="button"
