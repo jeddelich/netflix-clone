@@ -7,6 +7,7 @@ import { useState } from "react";
 import { SubmitHandler, useForm, useWatch } from "react-hook-form";
 import SignInForm from "@/components/ui/SignInForm";
 import SignUpForm from "@/components/ui/SignUpForm";
+import ForgotPasswordForm from "@/components/ui/ForgotPasswordForm";
 
 interface Inputs {
   email: string;
@@ -69,7 +70,20 @@ function Login() {
 
 {
         loginModal ? (
-      <SignInForm
+      // <SignInForm
+      //   register={registerSignIn}
+      //   handleSubmit={handleSubmitSignIn}
+      //   onSubmit={onSignIn}
+      //   errors={signInErrors}
+      //   passwordValue={signInPasswordValue}
+      //   showPassword={showPassword}
+      //   setShowPassword={setShowPassword}
+      //   onCreateAccount={() => {
+      //     setLoginModal(false);
+      //     resetSignUp();
+      //   }}
+      // />
+      <ForgotPasswordForm 
         register={registerSignIn}
         handleSubmit={handleSubmitSignIn}
         onSubmit={onSignIn}
@@ -77,9 +91,9 @@ function Login() {
         passwordValue={signInPasswordValue}
         showPassword={showPassword}
         setShowPassword={setShowPassword}
-        onCreateAccount={() => {
-          setLoginModal(false);
-          resetSignUp();
+        onSignIn={() => {
+          setLoginModal(true);
+          resetSignIn();
         }}
       />
         ) : (
