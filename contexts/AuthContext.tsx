@@ -3,6 +3,7 @@
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signOut,
   User,
@@ -23,6 +24,7 @@ interface IAuth {
   user: User | null;
   signUp: (email: string, password: string) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
+  resetPassword: (email: string) => Promise<void>;
   logout: () => Promise<void>;
   error: string | null;
   loading: boolean;
@@ -32,6 +34,7 @@ const AuthContext = createContext<IAuth>({
   user: null,
   signUp: async () => {},
   signIn: async () => {},
+  resetPassword: async () => {},
   logout: async () => {},
   error: null,
   loading: false,
@@ -93,6 +96,17 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       .finally(() => setLoading(false));
   }, [router]);
 
+  const resetPassword = useCallback(async (email: string) => {
+    setLoading(true);
+
+    await sendPasswordResetEmail(auth, email)
+      .then(() => {
+        alert("Password reset email sent.");
+      })
+      .catch((error) => alert(error.message))
+      .finally(() => setLoading(false));
+  }, []);
+
   const logout = useCallback(async () => {
     setLoading(true);
 
@@ -109,11 +123,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       user,
       signUp,
       signIn,
+      resetPassword,
       loading,
       logout,
       error,
     }),
-    [user, signUp, signIn, loading, logout, error],
+    [user, signUp, signIn, resetPassword, loading, logout, error],
   );
 
   return (

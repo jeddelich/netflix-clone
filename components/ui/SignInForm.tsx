@@ -21,6 +21,7 @@ interface SignInFormProps {
   showPassword: boolean;
   setShowPassword: Dispatch<SetStateAction<boolean>>;
   onCreateAccount: () => void;
+  onForgotPassword: () => void;
 }
 
 function SignInForm({
@@ -32,13 +33,16 @@ function SignInForm({
   showPassword,
   setShowPassword,
   onCreateAccount,
+  onForgotPassword,
 }: SignInFormProps) {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="relative mt-24 space-y-8 rounded bg-black/75 py-7 lg:py-10 md:mt-0 min-w-75 sm:min-w-100 w-1/2 md:max-w-md px-10 lg:px-14"
     >
-      <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold">Sign In</h1>
+      <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold">
+        Sign In
+      </h1>
       <div className="space-y-4">
         <label className="inline-block w-full">
           <input
@@ -79,7 +83,7 @@ function SignInForm({
           )}
         </label>
       </div>
-
+          
       <button
         type="submit"
         className="w-full rounded bg-[#e50914] py-3 font-semibold hover:bg-[#f6121d] cursor-pointer active:scale-95 transition duration-150"
@@ -87,14 +91,21 @@ function SignInForm({
         Sign In
       </button>
 
-      <div className="text-sm sm:text-base">
-        New to Netflix?
+      <div className="text-sm flex flex-col w-fit gap-2">
         <button
           type="button"
-          className="text-white hover:underline ml-2 cursor-pointer active:scale-95"
+          className="text-sm text-left text-gray-400 hover:underline cursor-pointer active:scale-95"
+          onClick={onForgotPassword}
+        >
+          Forgot password?
+        </button>
+            
+        <button
+          type="button"
+          className="text-white text-left text-base hover:underline cursor-pointer active:scale-95"
           onClick={onCreateAccount}
         >
-          Create an account
+          Create Netflix Account
         </button>
       </div>
     </form>

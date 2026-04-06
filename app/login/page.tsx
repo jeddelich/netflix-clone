@@ -1,6 +1,7 @@
 "use client";
 
 import useAuth from "@/contexts/AuthContext";
+import useModal, { AuthModal } from "@/contexts/ModalContext";
 import Head from "next/head";
 import Image from "next/image";
 import { useState } from "react";
@@ -14,10 +15,14 @@ interface Inputs {
   password: string;
 }
 
+interface ForgotPasswordInputs {
+  email: string;
+}
+
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
-  const [loginModal, setLoginModal] = useState(true);
-  const {signIn, signUp} = useAuth() 
+  const { activeModal, setActiveModal } = useModal();
+  const { signIn, signUp, resetPassword } = useAuth();
   
   const {
     register: registerSignIn,
@@ -35,8 +40,23 @@ function Login() {
     formState: { errors: signUpErrors },
   } = useForm<Inputs>();
 
+  const {
+    register: registerForgotPassword,
+    handleSubmit: handleSubmitForgotPassword,
+    reset: resetForgotPassword,
+    formState: { errors: forgotPasswordErrors },
+  } = useForm<ForgotPasswordInputs>();
+
   const signInPasswordValue = useWatch({ control: controlSignIn, name: "password" });
   const signUpPasswordValue = useWatch({ control: controlSignUp, name: "password" });
+
+  const switchModal = (modal: AuthModal) => {
+    resetSignIn();
+    resetSignUp();
+    resetForgotPassword();
+    setShowPassword(false);
+    setActiveModal(modal);
+  };
 
   const onSignIn: SubmitHandler<Inputs> = async ({ email, password }) => {
     await signIn(email, password);
@@ -44,6 +64,10 @@ function Login() {
 
   const onSignUp: SubmitHandler<Inputs> = async ({ email, password }) => {
     await signUp(email, password);
+  };
+
+  const onForgotPassword: SubmitHandler<ForgotPasswordInputs> = async ({ email }) => {
+    await resetPassword(email);
   };
 
   return (
@@ -67,51 +91,43 @@ function Login() {
         width={150}
         height={150}
       />
+      {activeModal === "sign-in" && (
+        <SignInForm
+          register={registerSignIn}
+          handleSubmit={handleSubmitSignIn}
+          onSubmit={onSignIn}
+          errors={signInErrors}
+          passwordValue={signInPasswordValue}
+          showPassword={showPassword}
+          setShowPassword={setShowPassword}
+          onCreateAccount={() => switchModal("sign-up")}
+          onForgotPassword={() => switchModal("forgot-password")}
+        />
+      )}
 
-{
-        loginModal ? (
-      // <SignInForm
-      //   register={registerSignIn}
-      //   handleSubmit={handleSubmitSignIn}
-      //   onSubmit={onSignIn}
-      //   errors={signInErrors}
-      //   passwordValue={signInPasswordValue}
-      //   showPassword={showPassword}
-      //   setShowPassword={setShowPassword}
-      //   onCreateAccount={() => {
-      //     setLoginModal(false);
-      //     resetSignUp();
-      //   }}
-      // />
-      <ForgotPasswordForm 
-        register={registerSignIn}
-        handleSubmit={handleSubmitSignIn}
-        onSubmit={onSignIn}
-        errors={signInErrors}
-        passwordValue={signInPasswordValue}
-        showPassword={showPassword}
-        setShowPassword={setShowPassword}
-        onSignIn={() => {
-          setLoginModal(true);
-          resetSignIn();
-        }}
-      />
-        ) : (
-          <SignUpForm
-        register={registerSignUp}
-        handleSubmit={handleSubmitSignUp}
-        onSubmit={onSignUp}
-        errors={signUpErrors}
-        passwordValue={signUpPasswordValue}
-        showPassword={showPassword}
-        setShowPassword={setShowPassword}
-        onSignIn={() => {
-          setLoginModal(true);
-          resetSignIn();
-        }}
-      />
-        )
-        }
+      {activeModal === "sign-up" && (
+        <SignUpForm
+          register={registerSignUp}
+          handleSubmit={handleSubmitSignUp}
+          onSubmit={onSignUp}
+          errors={signUpErrors}
+          passwordValue={signUpPasswordValue}
+          showPassword={showPassword}
+          setShowPassword={setShowPassword}
+          onSignIn={() => switchModal("sign-in")}
+        />
+      )}
+
+      {activeModal === "forgot-password" && (
+        <ForgotPasswordForm
+          register={registerForgotPassword}
+          handleSubmit={handleSubmitForgotPassword}
+          onSubmit={onForgotPassword}
+          errors={forgotPasswordErrors}
+          onSignIn={() => switchModal("sign-in")}
+          onSignUp={() => switchModal("sign-up")}
+        />
+      )}
     </div>
   );
 }
