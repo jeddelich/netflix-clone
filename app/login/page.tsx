@@ -1,6 +1,6 @@
 "use client";
 
-import useAuth from "@/hooks/useAuth";
+import useAuth from "@/contexts/AuthContext";
 import Head from "next/head";
 import Image from "next/image";
 import { useState } from "react";

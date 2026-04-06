@@ -3,7 +3,7 @@
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { BellIcon } from "@heroicons/react/20/solid";
 import { useEffect, useRef, useState } from "react";
-import useAuth from "@/hooks/useAuth";
+import useAuth from "@/contexts/AuthContext";
 import {
   FaCaretDown,
   FaEdit,
