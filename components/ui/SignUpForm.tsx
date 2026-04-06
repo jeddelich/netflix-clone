@@ -36,19 +36,19 @@ function SignUpForm({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="relative mt-24 space-y-8 rounded bg-black/75 py-7 lg:py-10 md:mt-0 min-w-75 sm:min-w-100 w-1/2 md:max-w-md px-6 md:px-10 lg:px-14"
+      className="relative mt-24 space-y-8 rounded bg-gray-200 py-7 lg:py-10 md:mt-0 min-w-75 sm:min-w-100 w-1/2 md:max-w-md px-6 md:px-10 lg:px-14"
     >
-      <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold">Create Your Account</h1>
+      <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-black">Create Your Account</h1>
       <div className="space-y-4">
         <label className="inline-block w-full">
           <input
             type="email"
             placeholder="Email"
-            className="input"
+            className="inputSignUp"
             {...register("email", { required: true })}
           />
           {errors.email && (
-            <p className="p-1 text-[13px] font-light  text-orange-500">
+            <p className="p-1 text-[13px] font-light  text-red-600">
               Please enter a valid email.
             </p>
           )}
@@ -57,23 +57,23 @@ function SignUpForm({
           <input
             type={showPassword ? "text" : "password"}
             placeholder="Password"
-            className="input"
+            className="inputSignUp"
             {...register("password", { required: true })}
           />
           {passwordValue &&
             (showPassword ? (
               <FaRegEyeSlash
-                className="opacity-75 absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer hover:scale-95"
+                className="text-gray-600 opacity-75 absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer hover:scale-95"
                 onClick={() => setShowPassword(false)}
               />
             ) : (
               <FaRegEye
-                className="opacity-75 absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer hover:scale-95"
+                className="text-gray-600 opacity-75 absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer hover:scale-95"
                 onClick={() => setShowPassword(true)}
               />
             ))}
           {errors.password && (
-            <p className="p-1 text-[13px] font-light  text-orange-500">
+            <p className="p-1 text-[13px] font-light  text-red-600">
               Your password must contain between 4 and 60 characters.
             </p>
           )}
@@ -82,16 +82,16 @@ function SignUpForm({
 
       <button
         type="submit"
-        className="w-full rounded bg-[#e50914] py-3 font-semibold hover:bg-[#f6121d] cursor-pointer active:scale-95 transition duration-150"
+        className="w-full rounded bg-[#e50914] py-3 font-semibold hover:bg-[#cc0812] cursor-pointer active:scale-95 transition duration-150"
       >
         Sign Up
       </button>
 
-      <div>
+      <div className="text-black">
         Already have an account?
         <button
           type="button"
-          className="text-white hover:underline ml-2 cursor-pointer active:scale-95"
+          className="text-black hover:underline ml-2 cursor-pointer active:scale-95"
           onClick={onSignIn}
         >
           Sign in

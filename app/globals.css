@@ -37,4 +37,7 @@ nextjs-portal {
   .input {
     @apply w-full rounded bg-[#333] px-5 py-3.5 placeholder-[gray] outline-none focus:bg-[#454545];
   }
+  .inputSignUp {
+    @apply w-full rounded bg-gray-300 px-5 py-3.5 placeholder-gray-600 outline-none border border-transparent focus:border-gray-500 text-gray-900;
+  }
 }
