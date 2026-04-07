@@ -17,6 +17,7 @@ function MovieThumbnail({movie}: Props) {
         className="object-cover rounded-sm md:rounded"
         fill 
         sizes="25vw"
+        onClick={() => console.log(movie)}
       />
     </div>
   )

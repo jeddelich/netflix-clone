@@ -57,7 +57,7 @@ function MovieBanner({ netflixOriginals }: Props) {
               <FaPlay className="h-4 w-4 text-black" />
               Play
             </button>
-            <button className="banner__btn bg-[gray]/70 flex items-center gap-x-1 transition hover:bg-[gray]/55 cursor-not-allowed">
+            <button className="banner__btn bg-[gray]/70 flex items-center gap-x-1 transition hover:bg-[gray]/55 cursor-not-allowed" onClick={() => console.log(movie)}>
               More Info{" "}
               <InformationCircleIcon className="h-5 w-5" />
             </button>
