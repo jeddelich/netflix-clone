@@ -2,17 +2,13 @@ import MovieBanner from "@/components/ui/MovieBanner";
 import Navbar from "@/components/layout/Navbar";
 import Row from "@/components/layout/Row";
 import requests from "@/utils/requests";
-import { useRecoilValue } from "recoil";
-import { trailerState } from "@/atoms/TrailerAtom";
-import TrailerModal from "@/components/ui/TrailerModal";
 
 export default function Home() {
-  const showTrailer = useRecoilValue(trailerState);
   
-  return <HomeContent showTrailer={showTrailer} />;
+  return <HomeContent />;
 }
 
-async function HomeContent({ showTrailer }: { showTrailer: boolean }) {
+async function HomeContent() {
   const [
     netflixOriginals,
     trendingNow,
@@ -49,7 +45,7 @@ async function HomeContent({ showTrailer }: { showTrailer: boolean }) {
             <Row title="Documentaries" movies={documentaries.results} />
           </section>
         </main>
-        {showTrailer && <TrailerModal />}
+        {/* <TrailerModal /> */}
       </div>
     </div>
   );

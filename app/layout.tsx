@@ -3,7 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ModalProvider } from "@/contexts/ModalContext";
-import { RecoilRoot, atom, selector, useRecoilState, useRecoilValue } from "recoil";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,11 +29,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased h-full`}
       >
-        <RecoilRoot>
         <AuthProvider>
           <ModalProvider>{children}</ModalProvider>
         </AuthProvider>
-        </RecoilRoot>
       </body>
     </html>
   );
