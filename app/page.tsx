@@ -1,14 +1,7 @@
-import MovieBanner from "@/components/ui/MovieBanner";
-import Navbar from "@/components/layout/Navbar";
-import Row from "@/components/layout/Row";
 import requests from "@/utils/requests";
+import HomeClient from "@/components/ui/HomeClient";
 
-export default function Home() {
-  
-  return <HomeContent />;
-}
-
-async function HomeContent() {
+export default async function Home() {
   const [
     netflixOriginals,
     trendingNow,
@@ -30,23 +23,15 @@ async function HomeContent() {
   ]);
 
   return (
-    <div className="relative">
-      <Navbar />
-      <div className="relative">
-        <main className="pb-24">
-          <MovieBanner netflixOriginals={netflixOriginals.results} />
-          <section className="pl-4 lg:pl-16 -mt-32 lg:-mt-48 md:mt-0">
-            <Row title="Trending Now" movies={trendingNow.results} />
-            <Row title="Top Rated" movies={topRated.results} />
-            <Row title="Action Thrillers" movies={actionMovies.results} />
-            <Row title="Comedies" movies={comedyMovies.results} />
-            <Row title="Scary Movies" movies={horrorMovies.results} />
-            <Row title="Romance Movies" movies={romanceMovies.results} />
-            <Row title="Documentaries" movies={documentaries.results} />
-          </section>
-        </main>
-        {/* <TrailerModal /> */}
-      </div>
-    </div>
+    <HomeClient
+      netflixOriginals={netflixOriginals.results}
+      trendingNow={trendingNow.results}
+      topRated={topRated.results}
+      actionMovies={actionMovies.results}
+      comedyMovies={comedyMovies.results}
+      horrorMovies={horrorMovies.results}
+      romanceMovies={romanceMovies.results}
+      documentaries={documentaries.results}
+    />
   );
 }
