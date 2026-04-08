@@ -12,6 +12,10 @@ interface Props {
 function MovieThumbnail({movie}: Props) {
 
   const { openTrailer } = useTrailerStore();
+  const mediaType =
+    movie.media_type === "tv" || (!!movie.first_air_date && !movie.release_date)
+      ? "tv"
+      : "movie";
 
   return (
     <div className="relative h-28 min-w-45 cursor-pointer transition duration-200 ease-out md:h-36 md:min-w-65 hover:scale-105">
@@ -23,7 +27,12 @@ function MovieThumbnail({movie}: Props) {
         className="object-cover rounded-sm md:rounded"
         fill 
         sizes="25vw"
-        onClick={() => openTrailer(movie, `https://api.themoviedb.org/3/${movie?.media_type === "movie" ? "movie" : "tv"}/${movie.id}?api_key=${process.env.NEXT_PUBLIC_API_KEY}&language=en-US&append_to_response=videos`)}
+        onClick={() =>
+          openTrailer(
+            movie,
+            `https://api.themoviedb.org/3/${mediaType}/${movie.id}?api_key=${process.env.NEXT_PUBLIC_API_KEY}&language=en-US&append_to_response=videos`,
+          )
+        }
       />
     </div>
   )

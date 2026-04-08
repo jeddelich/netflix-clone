@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import ReactPlayer from "react-player";
 import { Element, Genre } from "@/typings";
+import { baseUrl } from "@/constants/movie";
 import { Modal } from "@mui/material";
 import { IoClose } from "react-icons/io5";
 
@@ -16,26 +17,34 @@ function TrailerModal() {
 
   useEffect(() => {
     if (!selectedMovie) return;
+    console.log("Selected movie:", selectedMovie);
 
     async function fetchTrailer() {
       try {
         const { data } = await axios.get(trailerUrl!);
         if (data?.videos) {
-          const index = data.videos.results.findIndex(
+          const trailerVideo = data.videos.results.find(
             (element: Element) => element.type === "Trailer",
           );
-          setTrailer(data.videos?.results[index]?.key);
+          setTrailer(trailerVideo?.key ?? null);
+        } else {
+          setTrailer(null);
         }
         if (data?.genres) {
           setGenres(data.genres);
         }
       } catch (error) {
+        setTrailer(null);
         console.error("Failed to fetch trailer:", error);
       }
     }
 
     fetchTrailer();
-  }, [selectedMovie]);
+
+    return () => {
+      setTrailer(null);
+    };
+  }, [selectedMovie, trailerUrl]);
 
   console.log("Trailer data:", trailer);
 
@@ -56,16 +65,23 @@ function TrailerModal() {
         </button>
 
         <div className="relative pt-[56.25%]">
-          { trailer && (
+          {trailer ? (
             <ReactPlayer
-            url={trailer ? `https://www.youtube.com/watch?v=${trailer}` : ""}
-            width="100%"
-            height="100%"
-            style={{ position: "absolute", top: "0", left: "0" }}
-            playing
-            muted={muted}
-            />)
-          }
+              url={`https://www.youtube.com/watch?v=${trailer}`}
+              width="100%"
+              height="100%"
+              style={{ position: "absolute", top: "0", left: "0" }}
+              playing
+              muted={muted}
+            />
+          ) : (
+            <div
+              className="absolute inset-0 bg-cover bg-center"
+              style={{
+                backgroundImage: `url(${baseUrl}${selectedMovie?.backdrop_path || selectedMovie?.poster_path || ""})`,
+              }}
+            />
+          )}
         </div>
       </div>
     </Modal>
