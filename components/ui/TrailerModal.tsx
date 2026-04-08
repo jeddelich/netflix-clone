@@ -24,7 +24,7 @@ function TrailerModal() {
           const index = data.videos.results.findIndex(
             (element: Element) => element.type === "Trailer",
           );
-          setTrailer(data.videos.results[index].key);
+          setTrailer(data.videos?.results[index]?.key);
         }
         if (data?.genres) {
           setGenres(data.genres);
@@ -45,6 +45,7 @@ function TrailerModal() {
       onClose={closeTrailer}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
+      className="fixed top-7 left-0 right-0 z-50 mx-auto w-full max-w-5xl overflow-hidden rounded-md"
     >
       <div>
         <button
@@ -54,7 +55,7 @@ function TrailerModal() {
           <IoClose className="h-6 w-6 text-white" />
         </button>
 
-        <div>
+        <div className="relative pt-[56.25%]">
           { trailer && (
             <ReactPlayer
             url={trailer ? `https://www.youtube.com/watch?v=${trailer}` : ""}
