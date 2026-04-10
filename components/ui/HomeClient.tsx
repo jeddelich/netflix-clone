@@ -34,14 +34,13 @@ export default function HomeClient({
   products,
 }: HomeClientProps) {
 
-  console.log(products);
   const isOpen = useTrailerStore((state) => state.isOpen);
   const { loading } = useAuth();
   const subscription = false; // Placeholder for subscription status
 
   if (loading || subscription === null) return null; 
 
-  if (!subscription) return <Plans />;
+  if (!subscription) return <Plans products={products} />;
 
   return (
     <div className="relative">
