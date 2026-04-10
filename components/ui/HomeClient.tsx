@@ -9,6 +9,7 @@ import TrailerModal from "./TrailerModal";
 import useAuth from "@/contexts/AuthContext";
 import Plans from "./Plans";
 import { Product } from "@/typings";
+import useSubscription from "@/hooks/useSubscription";
 
 type HomeClientProps = {
   netflixOriginals: Movie[];
@@ -35,10 +36,10 @@ export default function HomeClient({
 }: HomeClientProps) {
 
   const isOpen = useTrailerStore((state) => state.isOpen);
-  const { loading } = useAuth();
-  const subscription = false; // Placeholder for subscription status
+  const { loading, user } = useAuth();
+  const subscription = useSubscription(user);
 
-  if (loading || subscription === null) return null; 
+  if (loading || (user && subscription === undefined)) return null;
 
   if (!subscription) return <Plans products={products} />;
 

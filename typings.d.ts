@@ -56,3 +56,11 @@ export interface Product {
     ads: string
   }
 }
+
+export interface Subscription {
+  id: string
+  role: string | null
+  status: string
+  current_period_start?: number
+  current_period_end?: number
+}
