@@ -64,6 +64,7 @@ export interface Subscription {
     seconds: number
     nanoseconds: number
   }
+  cancel_at_period_end?: boolean
   product?: string
   role: string | null
   status: string
