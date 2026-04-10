@@ -136,10 +136,12 @@ function Header() {
                 <FaEdit className="w-5 h-5" />
                 Manage Profiles
               </li>
-              <li className="flex items-center gap-2 text-sm font-normal text-gray-400 hover:text-white cursor-not-allowed mb-3">
+              <Link href="/account">
+              <li className="flex items-center gap-2 text-sm font-normal text-gray-400 hover:text-white mb-3">
                 <FaUser className="w-5 h-5" />
                 Account
               </li>
+              </Link>
               <li className="flex items-center gap-2 text-sm font-normal text-gray-400 hover:text-white cursor-not-allowed mb-3">
                 <FaRegQuestionCircle className="w-5 h-5" />
                 Help Center

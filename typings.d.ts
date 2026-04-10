@@ -48,6 +48,7 @@ export interface Product {
   images: string[]
   prices: Price[]
   metadata: {
+    role?: string
     videoQuality: string
     resolution: string
     portability: string
@@ -59,6 +60,11 @@ export interface Product {
 
 export interface Subscription {
   id: string
+  created?: {
+    seconds: number
+    nanoseconds: number
+  }
+  product?: string
   role: string | null
   status: string
   current_period_start?: number
