@@ -1,7 +1,14 @@
 import requests from "@/utils/requests";
 import HomeClient from "@/components/ui/HomeClient";
+import { getProducts } from "@stripe/firestore-stripe-payments";
 
 export default async function Home() {
+
+  const products = await getProducts(payments, {
+    includePrices: true,
+    activeOnly: true,
+  }).then((res) => res).catch((error) => console.log(error.message));
+
   const [
     netflixOriginals,
     trendingNow,
