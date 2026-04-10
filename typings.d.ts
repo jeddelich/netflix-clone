@@ -47,4 +47,12 @@ export interface Product {
   active: boolean
   images: string[]
   prices: Price[]
+  metadata: {
+    videoQuality: string
+    resolution: string
+    portability: string
+    watchDevices: string
+    downloadDevices: string
+    ads: string
+  }
 }

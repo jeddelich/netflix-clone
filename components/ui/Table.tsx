@@ -55,7 +55,7 @@ function Table({
               key={product.id}
               className={`tableDataFeature ${selectedPlan?.id === product.id ? "text-[#E50914]" : "text-[gray]"}`}
             >
-              {product.metadata!.portability &&
+              {product.metadata!.portability === "true" &&
                 "TV, computer, mobile phone, tablet"}
             </td>
           ))}

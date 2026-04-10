@@ -1,26 +1,29 @@
-import {
-  createCheckoutSession,
-  getStripePayments,
-} from "@stripe/firestore-stripe-payments";
-import { getFunctions, httpsCallable } from "firebase/functions";
-import app from "@/firebase";
+import { addDoc, collection, onSnapshot } from "firebase/firestore";
+import { db } from "@/firebase";
 
-const payments = getStripePayments(app, {
-  productsCollection: "products",
-  customersCollection: "customers",
-});
+const loadCheckout = async (userId: string, priceId: string) => {
+  const checkoutSessionRef = await addDoc(
+    collection(db, "customers", userId, "checkout_sessions"),
+    {
+      price: priceId,
+      success_url: window.location.origin,
+      cancel_url: window.location.origin,
+    },
+  );
 
-const loadCheckout = async (priceId: string) => {
-  await createCheckoutSession(payments, {
-    price: priceId,
-    success_url: window.location.origin,
-    cancel_url: window.location.origin,
-  })
-    .then((snapshot) => {
-      window.location.assign(snapshot.url);
-    })
-    .catch((error) => console.log(error.message));
+  onSnapshot(checkoutSessionRef, (snap) => {
+    const data = snap.data();
+    if (!data) return;
+
+    if (data.error) {
+      console.error(data.error.message);
+      return;
+    }
+
+    if (data.url) {
+      window.location.assign(data.url);
+    }
+  });
 };
 
 export { loadCheckout };
-export default payments;
