@@ -6,9 +6,11 @@ import useAuth from "@/contexts/AuthContext";
 import { CheckIcon } from "@heroicons/react/24/outline";
 import { Product } from "@/typings";
 import Table from "./Table";
+import { useState } from "react";
 
 function Plans({ products }: { products: Product[] }) {
   const { logout } = useAuth();
+  const [selectedPlan, setSelectedPlan] = useState<Product | null>(products[2]); 
 
   return (
     <div>
@@ -53,14 +55,18 @@ function Plans({ products }: { products: Product[] }) {
           <div className="flex w-full items-center justify-end self-end md:w-3/5">
             {
               products.map((product) => (
-                <div key={product.id} className="planBox">
+                <div
+                  key={product.id}
+                  className={`planBox ${selectedPlan?.id === product.id ? "opacity-100" : "opacity-60"} `}
+                  onClick={() => setSelectedPlan(product)}
+                >
                   {product.name}
                 </div>
               ))
             }
           </div>
 
-          <Table products={products} />
+          <Table products={products} selectedPlan={selectedPlan} />
 
           <button>Subscribe</button>
         </div>
