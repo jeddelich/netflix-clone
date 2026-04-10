@@ -8,6 +8,7 @@ import MovieBanner from "./MovieBanner";
 import TrailerModal from "./TrailerModal";
 import useAuth from "@/contexts/AuthContext";
 import Plans from "./Plans";
+import { Product } from "@/typings";
 
 type HomeClientProps = {
   netflixOriginals: Movie[];
@@ -18,6 +19,7 @@ type HomeClientProps = {
   horrorMovies: Movie[];
   romanceMovies: Movie[];
   documentaries: Movie[];
+  products: Product[];
 };
 
 export default function HomeClient({
@@ -29,7 +31,10 @@ export default function HomeClient({
   horrorMovies,
   romanceMovies,
   documentaries,
+  products,
 }: HomeClientProps) {
+
+  console.log(products);
   const isOpen = useTrailerStore((state) => state.isOpen);
   const { loading } = useAuth();
   const subscription = false; // Placeholder for subscription status

@@ -31,3 +31,20 @@ export interface Element {
     | 'Trailer'
     | 'Teaser'
 }
+
+export interface Price {
+  id: string
+  currency: string
+  unit_amount: number | null
+  interval: 'day' | 'week' | 'month' | 'year'
+  interval_count: number
+}
+
+export interface Product {
+  id: string
+  name: string
+  description: string | null
+  active: boolean
+  images: string[]
+  prices: Price[]
+}
