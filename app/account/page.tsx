@@ -8,6 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Product } from "@/typings";
+import Membership from "@/components/ui/Membership";
 
 function AccountPage() {
   const { user, logout } = useAuth();
@@ -94,6 +95,8 @@ function AccountPage() {
             </p>
           </div>
         </div>
+
+        <Membership />
 
         <div className="mt-6 grid grid-cols-1 gap-x-4 border px-4 py-4 md:grid-cols-4 md:border-x-0 md:border-t md:border-b-0 md:px-0 md:pb-0">
           <h4>Plan Details</h4>
