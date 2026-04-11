@@ -11,6 +11,7 @@ import Plans from "./Plans";
 import { Product } from "@/typings";
 import useSubscription from "@/hooks/useSubscription";
 import useList from "@/hooks/useList";
+import PageLoader from "@/components/ui/PageLoader";  
 
 type HomeClientProps = {
   netflixOriginals: Movie[];
@@ -41,7 +42,7 @@ export default function HomeClient({
   const subscription = useSubscription(user);
   const list = useList(user?.uid);
 
-  if (loading || (user && subscription === undefined)) return null;
+  if (loading || (user && subscription === undefined)) return <PageLoader />;
 
   if (!user) return null;
 
