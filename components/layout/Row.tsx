@@ -8,9 +8,9 @@ import { DocumentData } from "firebase/firestore";
 
 interface Props {
   title: string;
-  movies: Movie | DocumentData[];
+  movies: Movie[] | DocumentData[];
 }
-  
+
 function Row({ title, movies }: Props) {
   const rowRef = useRef<HTMLDivElement>(null);
   const [isMoved, setIsMoved] = useState(false);
@@ -45,7 +45,7 @@ function Row({ title, movies }: Props) {
           ref={rowRef}
           className="scrollbar--remove flex items-center space-x-1.5 overflow-x-scroll md:space-x-2.5 md:m-2"
         >
-          {movies.map((movie: Movie) => (
+          {movies.map((movie: Movie | DocumentData) => (
             <MovieThumbnail key={movie.id} movie={movie} />
           ))}
         </div>

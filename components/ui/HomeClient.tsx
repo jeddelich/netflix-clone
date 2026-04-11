@@ -43,6 +43,8 @@ export default function HomeClient({
 
   if (loading || (user && subscription === undefined)) return null;
 
+  if (!user) return null;
+
   if (!subscription) return <Plans products={products} />;
 
   return (
