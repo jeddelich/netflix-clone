@@ -43,7 +43,7 @@ function Row({ title, movies }: Props) {
 
         <div
           ref={rowRef}
-          className="scrollbar--remove flex items-center space-x-1.5 overflow-x-scroll md:space-x-2.5 md:m-2"
+          className="scrollbar--remove flex items-center space-x-1.5 overflow-x-scroll md:space-x-2.5 md:m-2 overflow-y-hidden"
         >
           {movies.map((movie: Movie | DocumentData) => (
             <MovieThumbnail key={movie.id} movie={movie} />
