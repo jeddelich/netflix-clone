@@ -5,6 +5,7 @@ import { Movie } from "@/typings"
 import Image from "next/image"
 import { useTrailerStore } from "@/store/useTrailerStore"
 import { DocumentData } from "firebase/firestore";
+import { getMediaType } from "@/utils/getMediaType";
 
 interface Props {
   movie: Movie | DocumentData;
@@ -13,10 +14,7 @@ interface Props {
 function MovieThumbnail({movie}: Props) {
 
   const { openTrailer } = useTrailerStore();
-  const mediaType =
-    movie.media_type === "tv" || (!!movie.first_air_date && !movie.release_date)
-      ? "tv"
-      : "movie";
+  const mediaType = getMediaType(movie);
 
   return (
     <div className="relative h-28 min-w-45 cursor-pointer transition duration-200 ease-out md:h-36 md:min-w-65 hover:scale-105">

@@ -7,6 +7,7 @@ import { InformationCircleIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { FaPlay } from "react-icons/fa";
+import { getMediaType } from "@/utils/getMediaType";
 
 interface Props {
   netflixOriginals: Movie[];
@@ -25,10 +26,7 @@ function MovieBanner({ netflixOriginals }: Props) {
   if (!movie) return null;
 
   const movieTitle = movie.title || movie.name || movie.original_name;
-  const mediaType =
-    movie.media_type === "tv" || (!!movie.first_air_date && !movie.release_date)
-      ? "tv"
-      : "movie";
+  const mediaType = getMediaType(movie);
 
   return (
     <div className="relative w-full h-screen lg:h-[140vh] flex flex-col justify-end overflow-hidden">
