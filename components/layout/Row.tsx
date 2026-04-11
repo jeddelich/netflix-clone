@@ -14,6 +14,7 @@ interface Props {
 function Row({ title, movies }: Props) {
   const rowRef = useRef<HTMLDivElement>(null);
   const [isMoved, setIsMoved] = useState(false);
+  const [isAtEnd, setIsAtEnd] = useState(false);
 
   const handleClick = (direction: string) => {
     setIsMoved(true);
@@ -45,6 +46,12 @@ function Row({ title, movies }: Props) {
 
         <div
           ref={rowRef}
+          onScroll={() => {
+            if (!rowRef.current) return;
+            const { scrollLeft, clientWidth, scrollWidth } = rowRef.current;
+            setIsMoved(scrollLeft > 0);
+            setIsAtEnd(scrollLeft + clientWidth >= scrollWidth - 1);
+          }}
           className="scrollbar--remove flex items-center space-x-1.5 overflow-x-scroll md:space-x-2.5 md:m-2 overflow-y-hidden"
         >
           {movies.map((movie: Movie | DocumentData) => (
@@ -52,7 +59,7 @@ function Row({ title, movies }: Props) {
           ))}
         </div>
         <div
-          className="transition duration-300 group/arrow flex items-center justify-center absolute top-1/2 transform -translate-y-1/2 right-0 md:right-2 z-40 m-auto h-28 md:h-36 w-10 md:w-12 cursor-pointer opacity-0 hover:bg-black/20 group-hover:opacity-100"
+          className={`transition duration-300 group/arrow flex items-center justify-center absolute top-1/2 transform -translate-y-1/2 right-0 md:right-2 z-40 m-auto h-28 md:h-36 w-10 md:w-12 cursor-pointer opacity-0 hover:bg-black/20 group-hover:opacity-100 ${isAtEnd && "hidden"}`}
           onClick={() => handleClick("right")}
         >
           <ChevronRightIcon className="transition duration-300 w-7 md:w-9 h-auto group-hover/arrow:scale-125" />
