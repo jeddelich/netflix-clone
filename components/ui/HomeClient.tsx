@@ -10,6 +10,7 @@ import useAuth from "@/contexts/AuthContext";
 import Plans from "./Plans";
 import { Product } from "@/typings";
 import useSubscription from "@/hooks/useSubscription";
+import useList from "@/hooks/useList";
 
 type HomeClientProps = {
   netflixOriginals: Movie[];
@@ -38,6 +39,7 @@ export default function HomeClient({
   const isOpen = useTrailerStore((state) => state.isOpen);
   const { loading, user } = useAuth();
   const subscription = useSubscription(user);
+  const list = useList(user?.uid);
 
   if (loading || (user && subscription === undefined)) return null;
 
@@ -53,6 +55,7 @@ export default function HomeClient({
             <Row title="Trending Now" movies={trendingNow} />
             <Row title="Top Rated" movies={topRated} />
             <Row title="Action Thrillers" movies={actionMovies} />
+            {list.length > 0 && <Row title="My List" movies={list} />}
             <Row title="Comedies" movies={comedyMovies} />
             <Row title="Scary Movies" movies={horrorMovies} />
             <Row title="Romance Movies" movies={romanceMovies} />

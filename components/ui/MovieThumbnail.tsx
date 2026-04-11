@@ -4,9 +4,10 @@ import { baseUrl } from "@/constants/movie"
 import { Movie } from "@/typings"
 import Image from "next/image"
 import { useTrailerStore } from "@/store/useTrailerStore"
+import { DocumentData } from "firebase/firestore";
 
 interface Props {
-    movie: Movie
+  movie: Movie | DocumentData;
 }
 
 function MovieThumbnail({movie}: Props) {

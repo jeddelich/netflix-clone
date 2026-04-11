@@ -4,12 +4,13 @@ import { Movie } from "@/typings";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import MovieThumbnail from "../ui/MovieThumbnail";
 import { useRef, useState } from "react";
+import { DocumentData } from "firebase/firestore";
 
 interface Props {
   title: string;
-  movies: Movie[];
+  movies: Movie | DocumentData[];
 }
-
+  
 function Row({ title, movies }: Props) {
   const rowRef = useRef<HTMLDivElement>(null);
   const [isMoved, setIsMoved] = useState(false);

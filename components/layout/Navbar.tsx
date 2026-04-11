@@ -12,6 +12,7 @@ import {
 } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
+import BasicMenu from "../ui/BasicMenu";
 
 function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -72,6 +73,8 @@ function Header() {
             className="cursor-pointer object-contain"
           />
         </Link>
+
+        <BasicMenu />
 
         <ul className="hidden space-x-4 lg:space-x-6 md:flex">
           <li className="header__link">Home</li>
