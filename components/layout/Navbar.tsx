@@ -22,6 +22,10 @@ function Header() {
   );
   const { logout } = useAuth();
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   const openProfileMenu = () => {
     if (closeMenuTimeoutRef.current) {
       clearTimeout(closeMenuTimeoutRef.current);
@@ -64,7 +68,7 @@ function Header() {
   return (
     <header className={`${isScrolled && "bg-[#141414]"}`}>
       <div className="flex items-center space-x-2 md:space-x-10 ">
-        <Link href="/" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+        <Link href="/" onClick={scrollToTop}>
           <Image
             alt="Netflix Logo"
             src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg"
@@ -77,20 +81,20 @@ function Header() {
         <BasicMenu />
 
         <ul className="hidden space-x-4 lg:space-x-6 md:flex">
-          <li className="header__link">Home</li>
-          <li className="header__link">Tv Shows</li>
-          <li className="header__link">Movies</li>
-          <li className="header__link">New & Popular</li>
-          <li className="header__link">My List</li>
+          <Link href="/" className="header__link" onClick={scrollToTop}>Home</Link>
+          <div style={{cursor: "not-allowed"}} className="header__link">Tv Shows</div>
+          <div style={{cursor: "not-allowed"}} className="header__link">Movies</div>
+          <Link href="/#trending" className="header__link">New & Popular</Link>
+          <Link href="/#my-list" className="header__link">My List</Link>
         </ul>
       </div>
 
       <div className="flex items-center space-x-4 text-sm font-light">
-        <MagnifyingGlassIcon className="h-6 w-6 cursor-not-allowed mt-0.5 " />
-        <p className="hidden lg:inline font-semibold md:text-xl cursor-not-allowed">
+        <MagnifyingGlassIcon className="h-6 w-6 cursor-not-allowed mt-0.5 transition duration-[.4s] hover:text-[#b3b3b3]" />
+        <p className="header__link hidden lg:inline cursor-not-allowed">
           Kids
         </p>
-        <BellIcon className="hidden h-6 w-6 mt-1 lg:inline cursor-not-allowed" />
+        <BellIcon className="hidden h-6 w-6 mt-0.5 transition duration-[.4s] hover:text-[#b3b3b3] lg:inline cursor-not-allowed" />
         <button
           onMouseEnter={openProfileMenu}
           onMouseLeave={closeProfileMenuWithDelay}

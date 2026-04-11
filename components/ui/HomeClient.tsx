@@ -55,10 +55,14 @@ export default function HomeClient({
         <main className="pb-24">
           <MovieBanner netflixOriginals={netflixOriginals} />
           <section className="pl-4 lg:pl-16 -mt-32 lg:-mt-48 md:mt-0">
+            <section id="trending" className="scroll-m-20">
             <Row title="Trending Now" movies={trendingNow} />
+            </section>
             <Row title="Top Rated" movies={topRated} />
             <Row title="Action Thrillers" movies={actionMovies} />
+             <section id="my-list" className="scroll-m-20">
             {list.length > 0 && <Row title="My List" movies={list} />}
+             </section>
             <Row title="Comedies" movies={comedyMovies} />
             <Row title="Scary Movies" movies={horrorMovies} />
             <Row title="Romance Movies" movies={romanceMovies} />
