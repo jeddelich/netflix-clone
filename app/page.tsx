@@ -42,14 +42,14 @@ export default async function Home() {
 
   return (
     <HomeClient
-      netflixOriginals={netflixOriginals.results}
-      trendingNow={trendingNow.results}
-      topRated={topRated.results}
-      actionMovies={actionMovies.results}
-      comedyMovies={comedyMovies.results}
-      horrorMovies={horrorMovies.results}
-      romanceMovies={romanceMovies.results}
-      documentaries={documentaries.results}
+      netflixOriginals={netflixOriginals?.results ?? []}
+      trendingNow={trendingNow?.results ?? []}
+      topRated={topRated?.results ?? []}
+      actionMovies={actionMovies?.results ?? []}
+      comedyMovies={comedyMovies?.results ?? []}
+      horrorMovies={horrorMovies?.results ?? []}
+      romanceMovies={romanceMovies?.results ?? []}
+      documentaries={documentaries?.results ?? []}
       products={products}
     />
   );

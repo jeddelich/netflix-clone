@@ -25,7 +25,6 @@ function TrailerModal() {
   const [trailer, setTrailer] = useState<string | null>(null);
   const [genres, setGenres] = useState<Genre[]>([]);
   const [muted, setMuted] = useState(false);
-  const [addedToList, setAddedToList] = useState(false);
   const [movies, setMovies] = useState<DocumentData[] | Movie[]>([]);
 
   const toastStyle = {
@@ -56,7 +55,6 @@ function TrailerModal() {
   }
 }
 
-  // Find all the movies in the user's list
   useEffect(() => {
     if (user) {
       return onSnapshot(
@@ -64,16 +62,10 @@ function TrailerModal() {
         (snapshot) => setMovies(snapshot.docs)
       )
     }
-  }, [db, selectedMovie?.id])
+  }, [user])
 
-  // Check if the movie is already in the user's list
-  useEffect(
-    () =>
-      setAddedToList(
-        movies.findIndex((result) => result.data().id === selectedMovie?.id) !== -1
-      ),
-    [movies]
-  )
+  const addedToList =
+    movies.findIndex((result) => result.data().id === selectedMovie?.id) !== -1;
 
   useEffect(() => {
     if (!selectedMovie) return;
@@ -83,7 +75,7 @@ function TrailerModal() {
       try {
         const { data } = await axios.get(trailerUrl!);
         if (data?.videos) {
-          const trailerVideo = data.videos.results.find(
+          const trailerVideo = data.videos.results?.find(
             (element: Element) => element.type === "Trailer",
           );
           setTrailer(trailerVideo?.key ?? null);
@@ -193,7 +185,7 @@ function TrailerModal() {
               <div className="flex flex-col space-y-3 text-sm">
                 <div>
                   <span className="text-[gray]">Genres: </span>
-                  {genres?.map((genre) => genre.name).join(", ")}
+                  {(genres ?? []).map((genre) => genre.name).join(", ")}
                 </div>
 
                 <div>
