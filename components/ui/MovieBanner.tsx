@@ -12,6 +12,7 @@ interface Props {
 }
 
 function MovieBanner({ netflixOriginals }: Props) {
+
   const [movie, setMovie] = useState<Movie | null>(null);
 
   useEffect(() => {
@@ -20,20 +21,21 @@ function MovieBanner({ netflixOriginals }: Props) {
     );
   }, [netflixOriginals]);
 
+  if (!movie) return null;
+
+  const movieTitle = movie.title || movie.name || movie.original_name;
+
   return (
-    movie && (
       <div className="relative w-full h-screen lg:h-[140vh] flex flex-col justify-end overflow-hidden">
-        {/* Image container */}
         <div className="absolute top-0 left-0 w-full h-full -z-10">
           <Image
-            src={`${baseUrl}${movie?.backdrop_path || movie?.poster_path}`}
-            alt={movie?.title || movie?.name || movie?.original_name}
+            src={`${baseUrl}${movie.backdrop_path || movie.poster_path}`}
+            alt={movieTitle || "Movie Banner"}
             fill
             style={{ objectFit: "cover" }}
             priority
           />
 
-          {/* Bottom fade overlay */}
           <div
             className="absolute bottom-0 left-0 w-full h-[70%] pointer-events-none"
             style={{
@@ -43,13 +45,12 @@ function MovieBanner({ netflixOriginals }: Props) {
           />
         </div>
 
-        {/* Banner content */}
         <div className="absolute top-1/3 sm:top-2/7 md:top-2/5 lg:top-1/3 left-4 lg:left-16 z-10">
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">
-            {movie?.title || movie?.name || movie?.original_name}
+            {movieTitle}
           </h1>
           <p className="mt-2 max-w-xs text-xs sm:max-w-sm sm:text-sm md:max-w-lg md:text-lg lg:max-w-2xl lg:text-xl text-shadow-md">
-            {movie?.overview}
+            {movie.overview}
           </p>
 
           <div className="flex space-x-3 mt-4">
@@ -64,7 +65,6 @@ function MovieBanner({ netflixOriginals }: Props) {
           </div>
         </div>
       </div>
-    )
   );
 }
 
