@@ -4,6 +4,16 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/firebase";
 import { Product } from "@/typings";
 
+const TMDB_REVALIDATE_SECONDS = 60 * 60;
+
+async function fetchJson(url: string) {
+  const response = await fetch(url, {
+    next: { revalidate: TMDB_REVALIDATE_SECONDS },
+  });
+
+  if (!response.ok) return null;
+  return response.json();
+}
 
 export default async function Home() {
 
@@ -11,13 +21,18 @@ export default async function Home() {
 
   const products: Product[] = [];
   if (productsSnap) {
-    for (const doc of productsSnap.docs) {
-      const pricesSnap = await getDocs(collection(db, "products", doc.id, "prices")).catch(() => null);
-      const prices = pricesSnap
-        ? pricesSnap.docs.map((p) => ({ id: p.id, ...p.data() }))
-        : [];
-      products.push({ id: doc.id, ...doc.data(), prices } as Product);
-    }
+    const productsWithPrices = await Promise.all(
+      productsSnap.docs.map(async (doc) => {
+        const pricesSnap = await getDocs(collection(db, "products", doc.id, "prices")).catch(() => null);
+        const prices = pricesSnap
+          ? pricesSnap.docs.map((p) => ({ id: p.id, ...p.data() }))
+          : [];
+
+        return { id: doc.id, ...doc.data(), prices } as Product;
+      }),
+    );
+
+    products.push(...productsWithPrices);
   }
 
   const [
@@ -30,14 +45,14 @@ export default async function Home() {
     romanceMovies,
     documentaries,
   ] = await Promise.all([
-    fetch(requests.fetchNetflixOriginals).then((res) => res.json()),
-    fetch(requests.fetchTrending).then((res) => res.json()),
-    fetch(requests.fetchTopRated).then((res) => res.json()),
-    fetch(requests.fetchActionMovies).then((res) => res.json()),
-    fetch(requests.fetchComedyMovies).then((res) => res.json()),
-    fetch(requests.fetchHorrorMovies).then((res) => res.json()),
-    fetch(requests.fetchRomanceMovies).then((res) => res.json()),
-    fetch(requests.fetchDocumentaries).then((res) => res.json()),
+    fetchJson(requests.fetchNetflixOriginals),
+    fetchJson(requests.fetchTrending),
+    fetchJson(requests.fetchTopRated),
+    fetchJson(requests.fetchActionMovies),
+    fetchJson(requests.fetchComedyMovies),
+    fetchJson(requests.fetchHorrorMovies),
+    fetchJson(requests.fetchRomanceMovies),
+    fetchJson(requests.fetchDocumentaries),
   ]);
 
   return (

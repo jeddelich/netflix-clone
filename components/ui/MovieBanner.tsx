@@ -1,6 +1,6 @@
 "use client";
 
-import { baseUrl } from "@/constants/movie";
+import { tmdbOriginalBaseUrl } from "@/constants/movie";
 import { useTrailerStore } from "@/store/useTrailerStore";
 import { Movie } from "@/typings";
 import { InformationCircleIcon } from "@heroicons/react/24/solid";
@@ -32,11 +32,13 @@ function MovieBanner({ netflixOriginals }: Props) {
     <div className="relative w-full h-screen lg:h-[140vh] flex flex-col justify-end overflow-hidden">
       <div className="absolute top-0 left-0 w-full h-full -z-10">
         <Image
-          src={`${baseUrl}${movie.backdrop_path || movie.poster_path}`}
+          src={`${tmdbOriginalBaseUrl}${movie.backdrop_path || movie.poster_path}`}
           alt={movieTitle || "Movie Banner"}
           fill
           style={{ objectFit: "cover" }}
           priority
+          sizes="100vw"
+          quality={80}
         />
 
         <div

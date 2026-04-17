@@ -26,6 +26,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full">
+      <head>
+        <link rel="preconnect" href="https://image.tmdb.org" />
+        <link rel="preconnect" href="https://api.themoviedb.org" />
+        <link rel="preconnect" href="https://upload.wikimedia.org" />
+        <link rel="preconnect" href="https://occ-0-1190-2774.1.nflxso.net" />
+        <link rel="dns-prefetch" href="https://i.ytimg.com" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased h-full`}
       >

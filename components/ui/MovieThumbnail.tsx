@@ -1,6 +1,6 @@
 "use client";
 
-import { baseUrl } from "@/constants/movie"
+import { tmdbThumbnailBaseUrl } from "@/constants/movie"
 import { Movie } from "@/typings"
 import Image from "next/image"
 import { useTrailerStore } from "@/store/useTrailerStore"
@@ -19,13 +19,14 @@ function MovieThumbnail({movie}: Props) {
   return (
     <div className="relative h-28 min-w-45 cursor-pointer transition duration-200 ease-out md:h-36 md:min-w-65 hover:scale-105">
         <Image
-        src={`${baseUrl}${
+        src={`${tmdbThumbnailBaseUrl}${
           movie.backdrop_path || movie.poster_path
         }`}
         alt=""
         className="object-cover rounded-sm md:rounded"
         fill 
-        sizes="25vw"
+        sizes="(max-width: 640px) 45vw, (max-width: 1024px) 25vw, 20vw"
+        quality={70}
         onClick={() =>
           openTrailer(
             movie,

@@ -4,7 +4,7 @@ import { useTrailerStore } from "@/store/useTrailerStore";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import ReactPlayer from "react-player";
-import { Element, Genre, Movie } from "@/typings";
+import { Element, Genre } from "@/typings";
 import { baseUrl } from "@/constants/movie";
 import { Modal } from "@mui/material";
 import { IoClose } from "react-icons/io5";
@@ -12,10 +12,11 @@ import { FaPlay } from "react-icons/fa";
 import { CheckIcon, PlusIcon } from "@heroicons/react/24/solid";
 import { LuThumbsUp } from "react-icons/lu";
 import { MdVolumeOff, MdVolumeUp } from "react-icons/md";
-import { collection, deleteDoc, doc, DocumentData, onSnapshot, setDoc } from "firebase/firestore";
+import { deleteDoc, doc, setDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 import useAuth from "@/contexts/AuthContext";
 import toast, { Toaster } from "react-hot-toast";
+import useList from "@/hooks/useList";
 
 function TrailerModal() {
 
@@ -25,7 +26,7 @@ function TrailerModal() {
   const [trailer, setTrailer] = useState<string | null>(null);
   const [genres, setGenres] = useState<Genre[]>([]);
   const [muted, setMuted] = useState(false);
-  const [movies, setMovies] = useState<DocumentData[] | Movie[]>([]);
+  const list = useList(user?.uid);
 
   const toastStyle = {
     background: 'white',
@@ -55,21 +56,11 @@ function TrailerModal() {
   }
 }
 
-  useEffect(() => {
-    if (user) {
-      return onSnapshot(
-        collection(db, 'customers', user.uid, 'myList'),
-        (snapshot) => setMovies(snapshot.docs)
-      )
-    }
-  }, [user])
-
   const addedToList =
-    movies.findIndex((result) => result.data().id === selectedMovie?.id) !== -1;
+    list.findIndex((result) => result.id === selectedMovie?.id) !== -1;
 
   useEffect(() => {
     if (!selectedMovie) return;
-    console.log("Selected movie:", selectedMovie);
 
     async function fetchTrailer() {
       try {
@@ -97,8 +88,6 @@ function TrailerModal() {
       setTrailer(null);
     };
   }, [selectedMovie, trailerUrl]);
-
-  console.log("Trailer data:", trailer);
 
   return (
     <Modal

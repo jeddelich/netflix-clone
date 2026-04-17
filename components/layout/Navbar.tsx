@@ -53,7 +53,7 @@ function Header() {
     window.addEventListener("scroll", handleScroll);
 
     return () => {
-      window.addEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
