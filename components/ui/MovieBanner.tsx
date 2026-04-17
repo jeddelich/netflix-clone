@@ -5,7 +5,6 @@ import { useTrailerStore } from "@/store/useTrailerStore";
 import { Movie } from "@/typings";
 import { InformationCircleIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
-import { useEffect, useState } from "react";
 import { FaPlay } from "react-icons/fa";
 import { getMediaType } from "@/utils/getMediaType";
 
@@ -14,16 +13,17 @@ interface Props {
 }
 
 function MovieBanner({ netflixOriginals }: Props) {
-  const [movie, setMovie] = useState<Movie | null>(null);
+  const movie = netflixOriginals[0] ?? null;
   const { openTrailer } = useTrailerStore();
 
-  useEffect(() => {
-    setMovie(
-      netflixOriginals[Math.floor(Math.random() * netflixOriginals.length)],
+  if (!movie) {
+    return (
+      <div
+        className="relative w-full h-screen lg:h-[140vh] bg-[#141414]"
+        aria-hidden="true"
+      />
     );
-  }, [netflixOriginals]);
-
-  if (!movie) return null;
+  }
 
   const movieTitle = movie.title || movie.name || movie.original_name;
   const mediaType = getMediaType(movie);
@@ -31,6 +31,10 @@ function MovieBanner({ netflixOriginals }: Props) {
   return (
     <div className="relative w-full h-screen lg:h-[140vh] flex flex-col justify-end overflow-hidden">
       <div className="absolute top-0 left-0 w-full h-full -z-10">
+        <div
+          className="absolute inset-0 bg-[#141414]"
+          aria-hidden="true"
+        />
         <Image
           src={`${tmdbOriginalBaseUrl}${movie.backdrop_path || movie.poster_path}`}
           alt={movieTitle || "Movie Banner"}
