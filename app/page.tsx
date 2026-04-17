@@ -1,8 +1,5 @@
 import requests from "@/utils/requests";
 import HomeClient from "@/components/ui/HomeClient";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "@/firebase";
-import { Product } from "@/typings";
 
 const TMDB_REVALIDATE_SECONDS = 60 * 60;
 
@@ -16,25 +13,6 @@ async function fetchJson(url: string) {
 }
 
 export default async function Home() {
-
-  const productsSnap = await getDocs(collection(db, "products")).catch(() => null);
-
-  const products: Product[] = [];
-  if (productsSnap) {
-    const productsWithPrices = await Promise.all(
-      productsSnap.docs.map(async (doc) => {
-        const pricesSnap = await getDocs(collection(db, "products", doc.id, "prices")).catch(() => null);
-        const prices = pricesSnap
-          ? pricesSnap.docs.map((p) => ({ id: p.id, ...p.data() }))
-          : [];
-
-        return { id: doc.id, ...doc.data(), prices } as Product;
-      }),
-    );
-
-    products.push(...productsWithPrices);
-  }
-
   const [
     netflixOriginals,
     trendingNow,
@@ -65,7 +43,6 @@ export default async function Home() {
       horrorMovies={horrorMovies?.results ?? []}
       romanceMovies={romanceMovies?.results ?? []}
       documentaries={documentaries?.results ?? []}
-      products={products}
     />
   );
 }

@@ -6,14 +6,69 @@ import useAuth from "@/contexts/AuthContext";
 import { CheckIcon } from "@heroicons/react/24/outline";
 import { Product } from "@/typings";
 import Table from "./Table";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Loader from "./Loader";
 import { loadCheckout } from "@/lib/Stripe";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "@/firebase";
 
-function Plans({ products }: { products: Product[] }) {
+function Plans() {
   const { logout, user } = useAuth();
-  const [selectedPlan, setSelectedPlan] = useState<Product | null>(products[2]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [selectedPlan, setSelectedPlan] = useState<Product | null>(null);
+  const [isPlansLoading, setIsPlansLoading] = useState(true);
   const [isBillingLoading, setIsBillingLoading] = useState(false);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadProducts = async () => {
+      const productsSnap = await getDocs(collection(db, "products")).catch(
+        () => null,
+      );
+
+      if (!productsSnap) {
+        if (isMounted) {
+          setProducts([]);
+          setIsPlansLoading(false);
+        }
+        return;
+      }
+
+      const fetchedProducts = await Promise.all(
+        productsSnap.docs.map(async (productDoc) => {
+          const pricesSnap = await getDocs(
+            collection(db, "products", productDoc.id, "prices"),
+          ).catch(() => null);
+
+          const prices = pricesSnap
+            ? pricesSnap.docs.map((priceDoc) => ({
+                id: priceDoc.id,
+                ...priceDoc.data(),
+              }))
+            : [];
+
+          return {
+            id: productDoc.id,
+            ...productDoc.data(),
+            prices,
+          } as Product;
+        }),
+      );
+
+      if (isMounted) {
+        setProducts(fetchedProducts);
+        setSelectedPlan(fetchedProducts[0] ?? null);
+        setIsPlansLoading(false);
+      }
+    };
+
+    void loadProducts();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const subscribeToPlan = async () => {
     if (!user || !selectedPlan) return;
@@ -76,10 +131,16 @@ function Plans({ products }: { products: Product[] }) {
             ))}
           </div>
 
-          <Table products={products} selectedPlan={selectedPlan} />
+          {isPlansLoading ? (
+            <div className="w-full py-6 flex justify-center">
+              <Loader color="dark:fill-gray-300" />
+            </div>
+          ) : (
+            <Table products={products} selectedPlan={selectedPlan} />
+          )}
 
           <button
-            disabled={!selectedPlan || isBillingLoading}
+            disabled={!selectedPlan || isBillingLoading || isPlansLoading}
             className={`mx-auto w-11/12 rounded bg-[#E50914] py-4 text-xl shadow hover:bg-[#F6121D] md:w-105 ${isBillingLoading ? "opacity-60" : ""}`}
             onClick={subscribeToPlan}
           >
