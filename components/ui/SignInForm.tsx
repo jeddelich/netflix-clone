@@ -6,6 +6,7 @@ import {
   UseFormRegister,
 } from "react-hook-form";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import { IoEnterOutline } from "react-icons/io5";
 
 interface Inputs {
   email: string;
@@ -38,7 +39,7 @@ function SignInForm({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="relative mt-24 space-y-8 rounded-md bg-black/80 py-7 lg:py-10 md:mt-0 min-w-75 sm:min-w-100 w-1/2 md:max-w-md px-10 lg:px-14"
+      className="relative mt-24 space-y-8 rounded-md bg-black/80 py-7 lg:py-10 md:mt-0 min-w-80 sm:min-w-100 w-1/2 md:max-w-md px-10 lg:px-14"
     >
       <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold">
         Sign In
@@ -105,7 +106,7 @@ function SignInForm({
           className="text-white text-left text-base hover:underline cursor-pointer"
           onClick={onCreateAccount}
         >
-          Create your Netflix account
+          Create Your Netflix Account
         </button>
       </div>
     </form>

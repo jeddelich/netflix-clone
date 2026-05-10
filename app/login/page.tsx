@@ -122,7 +122,7 @@ function Login() {
       <Image
         src="/netflix-logo.svg"
         alt="Netflix logo"
-        className="absolute left-4 top-4 z-10 cursor-pointer object-contain drop-shadow-[0_4px_14px_rgba(0,0,0,0.9)] md:left-10 md:top-6"
+        className="absolute left-4 top-4 z-10 cursor-pointer object-contain drop-shadow-[0_4px_14px_rgba(0,0,0,0.9)] lg:left-10 lg:top-6"
         width={150}
         height={150}
       />
