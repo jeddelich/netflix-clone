@@ -101,19 +101,28 @@ function Login() {
       <Head>
         <title>Home - Netflix</title>
         <link rel="icon" href="/favicon.ico" />
+        <link
+          rel="preload"
+          as="image"
+          href="/netflix-background.jpg"
+          media="(min-width: 768px)"
+        />
       </Head>
-      <Image
-        src="https://assets.nflxext.com/ffe/siteui/vlv3/d0982892-13ac-4702-b9fa-87a410c1f2da/519e3d3a-1c8c-4fdb-8f8a-7eabdbe87056/AE-en-20220321-popsignuptwoweeks-perspective_alpha_website_large.jpg"
-        fill
-        className="-z-10 hidden! opacity-60 sm:inline!"
-        objectFit="cover"
-        alt=""
-      />
+      <picture className="absolute inset-0 -z-10 hidden sm:block">
+        <source media="(min-width: 768px)" srcSet="/netflix-background.jpg" />
+        <img
+          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="
+          alt=""
+          className="h-full w-full object-cover opacity-60"
+          fetchPriority="high"
+          decoding="async"
+        />
+      </picture>
 
       <Image
-        src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg"
+        src="/netflix-logo.svg"
         alt="Netflix logo"
-        className="absolute left-4 top-4 cursor-pointer object-contain md:left-10 md:top-6"
+        className="absolute left-4 top-4 z-10 cursor-pointer object-contain drop-shadow-[0_4px_14px_rgba(0,0,0,0.9)] md:left-10 md:top-6"
         width={150}
         height={150}
       />
