@@ -38,7 +38,7 @@ function SignInForm({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="relative mt-24 space-y-8 rounded bg-black/75 py-7 lg:py-10 md:mt-0 min-w-75 sm:min-w-100 w-1/2 md:max-w-md px-10 lg:px-14"
+      className="relative mt-24 space-y-8 rounded-md bg-black/80 py-7 lg:py-10 md:mt-0 min-w-75 sm:min-w-100 w-1/2 md:max-w-md px-10 lg:px-14"
     >
       <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold">
         Sign In
@@ -86,7 +86,7 @@ function SignInForm({
           
       <button
         type="submit"
-        className="w-full rounded bg-[#e50914] py-3 font-semibold hover:bg-[#f6121d] cursor-pointer active:scale-95 transition duration-150"
+        className="w-full rounded bg-[#d81f26] py-3 font-semibold hover:bg-[#f6121d] cursor-pointer active:scale-95 transition duration-150"
       >
         Sign In
       </button>
@@ -94,18 +94,18 @@ function SignInForm({
       <div className="text-sm flex flex-col w-fit gap-2">
         <button
           type="button"
-          className="text-sm text-left text-gray-400 hover:underline cursor-pointer active:scale-95"
+          className="w-fit text-sm text-left text-gray-400 hover:underline cursor-pointer"
           onClick={onForgotPassword}
         >
-          Forgot password?
+          Forgot your password?
         </button>
             
         <button
           type="button"
-          className="text-white text-left text-base hover:underline cursor-pointer active:scale-95"
+          className="text-white text-left text-base hover:underline cursor-pointer"
           onClick={onCreateAccount}
         >
-          Create Netflix Account
+          Create your Netflix account
         </button>
       </div>
     </form>
