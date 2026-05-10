@@ -5,8 +5,7 @@ import {
   UseFormHandleSubmit,
   UseFormRegister,
 } from "react-hook-form";
-import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
-import { IoEnterOutline } from "react-icons/io5";
+import { FaRegEye, FaRegEyeSlash, FaUserCircle } from "react-icons/fa";
 
 interface Inputs {
   email: string;
@@ -23,6 +22,7 @@ interface SignInFormProps {
   setShowPassword: Dispatch<SetStateAction<boolean>>;
   onCreateAccount: () => void;
   onForgotPassword: () => void;
+  onGuestLogin: () => void;
 }
 
 function SignInForm({
@@ -35,6 +35,7 @@ function SignInForm({
   setShowPassword,
   onCreateAccount,
   onForgotPassword,
+  onGuestLogin,
 }: SignInFormProps) {
   return (
     <form
@@ -92,21 +93,37 @@ function SignInForm({
         Sign In
       </button>
 
-      <div className="text-sm flex flex-col w-fit gap-2">
+      <div className="flex items-end justify-between gap-4">
+        <div className="text-sm flex flex-col w-fit gap-2">
+          <button
+            type="button"
+            className="w-fit text-sm text-left text-gray-400 hover:underline cursor-pointer"
+            onClick={onForgotPassword}
+          >
+            Forgot your password?
+          </button>
+
+          <button
+            type="button"
+            className="text-white text-sm text-left sm:text-base hover:underline cursor-pointer"
+            onClick={onCreateAccount}
+          >
+            Create Your Netflix Account
+          </button>
+        </div>
+
         <button
           type="button"
-          className="w-fit text-sm text-left text-gray-400 hover:underline cursor-pointer"
-          onClick={onForgotPassword}
+          className="group flex flex-col items-center gap-2 cursor-pointer"
+          onClick={onGuestLogin}
+          aria-label="Guest login"
         >
-          Forgot your password?
-        </button>
-            
-        <button
-          type="button"
-          className="text-white text-left text-base hover:underline cursor-pointer"
-          onClick={onCreateAccount}
-        >
-          Create Your Netflix Account
+          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#2a4b8d] transition duration-150 group-hover:bg-[#3560b1] group-active:scale-95">
+            <FaUserCircle className="text-2xl text-white" />
+          </span>
+          <span className="text-[10px] uppercase tracking-[0.18em] text-[#9bb5e8]">
+            Demo
+          </span>
         </button>
       </div>
     </form>

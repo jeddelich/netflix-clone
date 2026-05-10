@@ -73,6 +73,10 @@ function Login() {
     await signIn(email, password);
   };
 
+  const onGuestLogin = async () => {
+    await signIn("demo@guest.com", "preview123!");
+  };
+
   const onSignUp: SubmitHandler<Inputs> = async ({ email, password }) => {
     await signUp(email, password);
   };
@@ -137,6 +141,7 @@ function Login() {
           setShowPassword={setShowPassword}
           onCreateAccount={() => switchModal("sign-up")}
           onForgotPassword={() => switchModal("forgot-password")}
+          onGuestLogin={onGuestLogin}
         />
       )}
 
