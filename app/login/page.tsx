@@ -7,9 +7,9 @@ import Image from "next/image";
 import { useState } from "react";
 import { FirebaseError } from "firebase/app";
 import { SubmitHandler, useForm, useWatch } from "react-hook-form";
-import SignInForm from "@/components/ui/SignInForm";
-import SignUpForm from "@/components/ui/SignUpForm";
-import ForgotPasswordForm from "@/components/ui/ForgotPasswordForm";
+import SignInForm from "@/components/login/SignInForm";
+import SignUpForm from "@/components/login/SignUpForm";
+import ForgotPasswordForm from "@/components/login/ForgotPasswordForm";
 
 interface Inputs {
   email: string;
