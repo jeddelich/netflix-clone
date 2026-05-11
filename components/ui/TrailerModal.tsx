@@ -26,6 +26,7 @@ function TrailerModal() {
   const [trailer, setTrailer] = useState<string | null>(null);
   const [genres, setGenres] = useState<Genre[]>([]);
   const [muted, setMuted] = useState(false);
+  const [liked, setLiked] = useState(false);
   const list = useList(user?.uid);
 
   const toastStyle = {
@@ -126,23 +127,26 @@ function TrailerModal() {
           )}
           <div className="absolute bottom-7 flex w-full items-center justify-between px-10">
             <div className="flex space-x-4">
-              <button className="flex items-center gap-x-2 rounded bg-white px-8 text-xl font-bold text-black transition hover:bg-[#e6e6e6] cursor-pointer">
+              <button className="flex items-center gap-x-2 rounded bg-white px-8 text-xl font-bold text-black transition hover:bg-[#e6e6e6] cursor-not-allowed">
                 <FaPlay className="h-4 w-4 text-black md:h-7 md:w-7" />
                 Play
               </button>
 
               <button
-                className="h-4 w-4 md:h-10 md:w-10 bg-gray-400/30 rounded-full flex justify-center items-center cursor-pointer border-2 border-gray-500 hover:bg-transparent"
+                className={`h-4 w-4 md:h-10 md:w-10 rounded-full flex justify-center items-center cursor-pointer border-2 transition ${addedToList ? "bg-white border-white" : "bg-gray-400/30 border-gray-500 hover:bg-transparent"}`}
                 onClick={handleList}
               >
                 {addedToList ? (
-                  <CheckIcon className="w-[80%] h-[80%] text-white" />
+                  <CheckIcon className="w-[80%] h-[80%] text-black" />
                 ) : (
                   <PlusIcon className="w-[80%] h-[80%] text-white" />
                 )}
               </button>
-              <button className="h-4 w-4 md:h-10 md:w-10 bg-gray-400/30 rounded-full flex justify-center items-center cursor-pointer border-2 border-gray-500 hover:bg-transparent">
-                <LuThumbsUp className="w-[60%] h-[60%] text-white" />
+              <button
+                className={`h-4 w-4 md:h-10 md:w-10 rounded-full flex justify-center items-center cursor-pointer border-2 transition ${liked ? "bg-white border-white" : "bg-gray-400/30 border-gray-500 hover:bg-transparent"}`}
+                onClick={() => setLiked(!liked)}
+              >
+                <LuThumbsUp className={`w-[60%] h-[60%] ${liked ? "text-black" : "text-white"}`} />
               </button>
             </div>
             <button className="cursor-pointer" onClick={() => setMuted(!muted)}>
@@ -159,7 +163,7 @@ function TrailerModal() {
           <div className="space-y-6 text-lg">
             <div className="flex items-center space-x-2 text-sm">
               <p className="font-semibold text-green-400">
-                {selectedMovie!.vote_average * 10}% Match
+                {(selectedMovie!.vote_average * 10).toFixed(2)}% Match
               </p>
               <p className="font-light">
                 {selectedMovie?.release_date || selectedMovie?.first_air_date}
