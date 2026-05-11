@@ -7,14 +7,25 @@ import { InformationCircleIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import { FaPlay } from "react-icons/fa";
 import { getMediaType } from "@/utils/getMediaType";
+import { useEffect, useState } from "react";
 
 interface Props {
   netflixOriginals: Movie[];
 }
 
 function MovieBanner({ netflixOriginals }: Props) {
-  const movie = netflixOriginals[0] ?? null;
+  const [movie, setMovie] = useState<Movie | null>(null);
   const { openTrailer } = useTrailerStore();
+
+  useEffect(() => {
+    if (!netflixOriginals.length) {
+      setMovie(null);
+      return;
+    }
+
+    const randomIndex = Math.floor(Math.random() * netflixOriginals.length);
+    setMovie(netflixOriginals[randomIndex]);
+  }, [netflixOriginals]);
 
   if (!movie) {
     return (
