@@ -17,9 +17,12 @@ interface SignInFormProps {
   handleSubmit: UseFormHandleSubmit<Inputs>;
   onSubmit: SubmitHandler<Inputs>;
   errors: FieldErrors<Inputs>;
+  statusMessage?: string;
+  statusField?: "email" | "password";
   passwordValue?: string;
   showPassword: boolean;
   setShowPassword: Dispatch<SetStateAction<boolean>>;
+  onCredentialsChange?: (value: string) => void;
   onCreateAccount: () => void;
   onForgotPassword: () => void;
   onGuestLogin: () => void;
@@ -30,9 +33,12 @@ function SignInForm({
   handleSubmit,
   onSubmit,
   errors,
+  statusMessage,
+  statusField = "password",
   passwordValue,
   showPassword,
   setShowPassword,
+  onCredentialsChange,
   onCreateAccount,
   onForgotPassword,
   onGuestLogin,
@@ -51,36 +57,54 @@ function SignInForm({
             type="email"
             placeholder="Email"
             className="input"
-            {...register("email", { required: true })}
+            {...register("email", {
+              required: true,
+              onChange: (event) => onCredentialsChange?.(event.target.value),
+            })}
           />
           {errors.email && (
             <p className="p-1 text-[13px] font-light  text-orange-500">
-              Please enter a valid email.
+              Please enter a valid email address.
+            </p>
+          )}
+          {!errors.email && statusMessage && statusField === "email" && (
+            <p className="p-1 text-[13px] font-light text-orange-500 max-w-60">
+              {statusMessage}
             </p>
           )}
         </label>
-        <label className="inline-block w-full relative">
-          <input
-            type={showPassword ? "text" : "password"}
-            placeholder="Password"
-            className="input"
-            {...register("password", { required: true })}
-          />
-          {passwordValue &&
-            (showPassword ? (
-              <FaRegEyeSlash
-                className="opacity-75 absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer hover:scale-95"
-                onClick={() => setShowPassword(false)}
-              />
-            ) : (
-              <FaRegEye
-                className="opacity-75 absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer hover:scale-95"
-                onClick={() => setShowPassword(true)}
-              />
-            ))}
+        <label className="inline-block w-full">
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              className="input"
+              {...register("password", {
+                required: true,
+                onChange: (event) => onCredentialsChange?.(event.target.value),
+              })}
+            />
+            {passwordValue &&
+              (showPassword ? (
+                <FaRegEyeSlash
+                  className="opacity-75 absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer hover:scale-95"
+                  onClick={() => setShowPassword(false)}
+                />
+              ) : (
+                <FaRegEye
+                  className="opacity-75 absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer hover:scale-95"
+                  onClick={() => setShowPassword(true)}
+                />
+              ))}
+          </div>
           {errors.password && (
             <p className="p-1 text-[13px] font-light  text-orange-500">
               Your password must contain between 4 and 60 characters.
+            </p>
+          )}
+          {!errors.password && statusMessage && statusField === "password" && (
+            <p className="p-1 text-[13px] font-light text-orange-500 max-w-60">
+              {statusMessage}
             </p>
           )}
         </label>

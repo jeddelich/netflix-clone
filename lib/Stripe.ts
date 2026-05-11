@@ -12,7 +12,6 @@ const loadCheckout = async (userId: string, priceId: string) => {
       cancel_url: window.location.origin,
     },
   );
-
   onSnapshot(checkoutSessionRef, (snap) => {
     const data = snap.data();
     if (!data) return;

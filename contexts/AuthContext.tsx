@@ -2,6 +2,7 @@
 
 import {
   createUserWithEmailAndPassword,
+  fetchSignInMethodsForEmail,
   onAuthStateChanged,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
@@ -25,6 +26,7 @@ interface IAuth {
   signUp: (email: string, password: string) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
+  checkEmailExists: (email: string) => Promise<boolean>;
   logout: () => Promise<void>;
   error: string | null;
   loading: boolean;
@@ -35,6 +37,7 @@ const AuthContext = createContext<IAuth>({
   signUp: async () => {},
   signIn: async () => {},
   resetPassword: async () => {},
+  checkEmailExists: async () => false,
   logout: async () => {},
   error: null,
   loading: false,
@@ -86,14 +89,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const signIn = useCallback(async (email: string, password: string) => {
     setLoading(true);
 
-    await signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        setUser(userCredential.user);
-        router.push("/");
-        setLoading(false);
-      })
-      .catch((error) => alert(error.message))
-      .finally(() => setLoading(false));
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      setUser(userCredential.user);
+      router.push("/");
+    } catch (error) {
+      throw error;
+    } finally {
+      setLoading(false);
+    }
   }, [router]);
 
   const resetPassword = useCallback(async (email: string) => {
@@ -104,6 +108,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     } finally {
       setLoading(false);
     }
+  }, []);
+
+  const checkEmailExists = useCallback(async (email: string) => {
+    const signInMethods = await fetchSignInMethodsForEmail(auth, email);
+    return signInMethods.length > 0;
   }, []);
 
   const logout = useCallback(async () => {
@@ -123,11 +132,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       signUp,
       signIn,
       resetPassword,
+      checkEmailExists,
       loading,
       logout,
       error,
     }),
-    [user, signUp, signIn, resetPassword, loading, logout, error],
+    [user, signUp, signIn, resetPassword, checkEmailExists, loading, logout, error],
   );
 
   return (

@@ -22,10 +22,12 @@ interface ForgotPasswordInputs {
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const [signInStatusMessage, setSignInStatusMessage] = useState("");
+  const [signInStatusField, setSignInStatusField] = useState<"email" | "password">("password");
   const [forgotPasswordStatusMessage, setForgotPasswordStatusMessage] = useState("");
   const [forgotPasswordStatusType, setForgotPasswordStatusType] = useState<"success" | "error">("success");
   const { activeModal, setActiveModal } = useModal();
-  const { signIn, signUp, resetPassword } = useAuth();
+  const { signIn, signUp, resetPassword, checkEmailExists } = useAuth();
   
   const {
     register: registerSignIn,
@@ -60,17 +62,66 @@ function Login() {
     }
   };
 
+  const onSignInCredentialsChange = (value: string) => {
+    if (!value.trim()) {
+      setSignInStatusMessage("");
+      setSignInStatusField("password");
+      return;
+    }
+
+    if (signInStatusMessage) {
+      setSignInStatusMessage("");
+      setSignInStatusField("password");
+    }
+  };
+
   const switchModal = (modal: AuthModal) => {
     resetSignIn();
     resetSignUp();
     resetForgotPassword();
+    setSignInStatusMessage("");
+    setSignInStatusField("password");
     setForgotPasswordStatusMessage("");
     setShowPassword(false);
     setActiveModal(modal);
   };
 
   const onSignIn: SubmitHandler<Inputs> = async ({ email, password }) => {
-    await signIn(email, password);
+    setSignInStatusMessage("");
+    setSignInStatusField("password");
+
+    try {
+      await signIn(email, password);
+    } catch (error) {
+      if (error instanceof FirebaseError) {
+        if (error.code === "auth/wrong-password") {
+          setSignInStatusField("password");
+          setSignInStatusMessage("Incorrect password. Try again.");
+          return;
+        }
+
+        if (error.code === "auth/user-not-found") {
+          setSignInStatusField("email");
+          setSignInStatusMessage("Email account doesn't exist. Try again.");
+          return;
+        }
+
+        if (error.code === "auth/invalid-email") {
+          setSignInStatusField("email");
+          setSignInStatusMessage("Invalid email. Try again.");
+          return;
+        }
+
+        if (error.code === "auth/invalid-credential") {
+          setSignInStatusField("password");
+          setSignInStatusMessage("Invalid email or password. Try again.");
+          return;
+        }
+      }
+
+      setSignInStatusField("password");
+      setSignInStatusMessage("Unable to sign in. Please try again.");
+    }
   };
 
   const onGuestLogin = async () => {
@@ -85,18 +136,26 @@ function Login() {
     setForgotPasswordStatusMessage("");
 
     try {
+      const emailExists = await checkEmailExists(email);
+
+      if (!emailExists) {
+        setForgotPasswordStatusType("error");
+        setForgotPasswordStatusMessage("Email account doesn't exist. Try again.");
+        return;
+      }
+
       await resetPassword(email);
       setForgotPasswordStatusType("success");
-      setForgotPasswordStatusMessage("If account exists, the reset link was sent. (Please check your inbox including spam)");
+      setForgotPasswordStatusMessage("Password reset email sent. Please check your inbox including spam.");
     } catch (error) {
-      if (error instanceof FirebaseError && error.code === "auth/user-not-found") {
+      if (error instanceof FirebaseError && error.code === "auth/invalid-email") {
         setForgotPasswordStatusType("error");
-        setForgotPasswordStatusMessage("No account associated with this email.");
+        setForgotPasswordStatusMessage("Please enter a valid email.");
         return;
       }
 
       setForgotPasswordStatusType("error");
-      setForgotPasswordStatusMessage("Please enter a valid email.");
+      setForgotPasswordStatusMessage("Unable to send reset email. Please try again.");
     }
   };
 
@@ -136,9 +195,12 @@ function Login() {
           handleSubmit={handleSubmitSignIn}
           onSubmit={onSignIn}
           errors={signInErrors}
+          statusMessage={signInStatusMessage}
+          statusField={signInStatusField}
           passwordValue={signInPasswordValue}
           showPassword={showPassword}
           setShowPassword={setShowPassword}
+          onCredentialsChange={onSignInCredentialsChange}
           onCreateAccount={() => switchModal("sign-up")}
           onForgotPassword={() => switchModal("forgot-password")}
           onGuestLogin={onGuestLogin}
