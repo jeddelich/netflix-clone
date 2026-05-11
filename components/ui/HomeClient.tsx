@@ -6,12 +6,12 @@ import { useTrailerStore } from "@/store/useTrailerStore";
 import { Movie } from "@/typings";
 import MovieBanner from "./MovieBanner";
 import useAuth from "@/contexts/AuthContext";
-import Plans from "./Plans";
 import useSubscription from "@/hooks/useSubscription";
 import useList from "@/hooks/useList";
 import PageLoader from "@/components/ui/PageLoader";  
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const TrailerModal = dynamic(() => import("./TrailerModal"), {
   ssr: false,
@@ -43,6 +43,7 @@ export default function HomeClient({
   const { loading, user } = useAuth();
   const subscription = useSubscription(user);
   const list = useList(user?.uid);
+  const router = useRouter();
   const [showSecondaryRows, setShowSecondaryRows] = useState(false);
 
   useEffect(() => {
@@ -57,7 +58,10 @@ export default function HomeClient({
 
   if (!user) return null;
 
-  if (!subscription) return <Plans />;
+  if (subscription === null) {
+    router.replace("/plans");
+    return null;
+  }
 
   return (
     <div className="relative">

@@ -5,14 +5,14 @@ import Link from "next/link";
 import useAuth from "@/contexts/AuthContext";
 import { CheckIcon } from "@heroicons/react/24/outline";
 import { Product } from "@/typings";
-import Table from "./Table";
+import Table from "@/components/ui/Table";
 import { useEffect, useState } from "react";
-import Loader from "./Loader";
+import Loader from "@/components/ui/Loader";
 import { loadCheckout } from "@/lib/Stripe";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/firebase";
 
-function Plans() {
+function PlansPage() {
   const { logout, user } = useAuth();
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedPlan, setSelectedPlan] = useState<Product | null>(null);
@@ -156,4 +156,4 @@ function Plans() {
   );
 }
 
-export default Plans;
+export default PlansPage;
