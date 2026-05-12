@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import useAuth from "@/contexts/AuthContext";
 import { FaCaretDown } from "react-icons/fa";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import BasicMenu from "../ui/BasicMenu";
 import ProfileMenu from "../ui/ProfileMenu";
@@ -18,11 +19,31 @@ function Header() {
   const closeMenuTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
     null,
   );
+  const router = useRouter();
+  const pathname = usePathname();
   const { logout, user } = useAuth();
   const list = useList(user?.uid);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const navigateToSection = (sectionId: "trending" | "my-list") => {
+    const targetHash = `#${sectionId}`;
+
+    if (pathname !== "/") {
+      router.push(`/${targetHash}`);
+      return;
+    }
+
+    const targetSection = document.getElementById(sectionId);
+    if (targetSection) {
+      targetSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    if (window.location.hash !== targetHash) {
+      window.history.replaceState(null, "", `/${targetHash}`);
+    }
   };
 
   const openProfileMenu = () => {
@@ -83,7 +104,10 @@ function Header() {
           <Link href="/" className="header__link" onClick={scrollToTop}>Home</Link>
           <div style={{cursor: "not-allowed"}} className="header__link">Tv Shows</div>
           <div style={{cursor: "not-allowed"}} className="header__link">Movies</div>
-          <Link href="/#trending" className="header__link">New & Popular</Link>
+          <button className="header__link" style={{ cursor: "pointer" }}
+          onClick={() => navigateToSection("trending")}>
+            New & Popular
+          </button>
           <button
             className="header__link"
             style={{ cursor: "pointer" }}
@@ -91,7 +115,7 @@ function Header() {
               if (list.length === 0) {
                 toast("Add some movies to your list to view!", { icon: "🎬" });
               } else {
-                window.location.href = "/#my-list";
+                navigateToSection("my-list");
               }
             }}
           >
