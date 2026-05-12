@@ -15,7 +15,7 @@ import { MdVolumeOff, MdVolumeUp } from "react-icons/md";
 import { deleteDoc, doc, setDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 import useAuth from "@/contexts/AuthContext";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import useList from "@/hooks/useList";
 
 function TrailerModal() {
@@ -39,10 +39,16 @@ function TrailerModal() {
     maxWidth: '1000px',
   }
 
+  const handleCloseTrailer = () => {
+    toast.dismiss();
+    closeTrailer();
+  };
+
   const handleList = async () => {
   if (addedToList) {
     await deleteDoc(doc(db, "customers", user!.uid, "myList", selectedMovie!.id.toString()));
     
+    toast.dismiss();
     toast(`${selectedMovie?.title || selectedMovie?.original_name} has been removed from My List`, {
       duration: 8000, style: toastStyle,
     })
@@ -51,6 +57,7 @@ function TrailerModal() {
       ...selectedMovie
     });
     
+    toast.dismiss();
     toast(`${selectedMovie?.title || selectedMovie?.original_name} has been added to My List`, {
       duration: 8000, style: toastStyle,
     });
@@ -90,18 +97,25 @@ function TrailerModal() {
     };
   }, [selectedMovie, trailerUrl]);
 
+  useEffect(() => {
+    toast.dismiss();
+
+    return () => {
+      toast.dismiss();
+    };
+  }, [isOpen]);
+
   return (
     <Modal
       open={isOpen}
-      onClose={closeTrailer}
+      onClose={handleCloseTrailer}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
       className="fixed top-7 left-0 right-0 z-50 mx-auto w-full max-w-5xl overflow-hidden overflow-y-scroll rounded-md"
     >
       <div>
-        <Toaster position="bottom-center" />
         <button
-          onClick={closeTrailer}
+          onClick={handleCloseTrailer}
           className="absolute right-5 top-5 z-50 h-9 w-9 border-none outline-none bg-[#181818] flex items-center justify-center rounded-full cursor-pointer"
         >
           <IoClose className="h-6 w-6 text-white" />

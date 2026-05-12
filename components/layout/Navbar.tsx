@@ -113,6 +113,7 @@ function Header() {
             style={{ cursor: "pointer" }}
             onClick={() => {
               if (list.length === 0) {
+                toast.dismiss();
                 toast("Add some movies to your list to view!", { icon: "🎬" });
               } else {
                 navigateToSection("my-list");
