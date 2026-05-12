@@ -9,6 +9,8 @@ import Link from "next/link";
 import Image from "next/image";
 import BasicMenu from "../ui/BasicMenu";
 import ProfileMenu from "../ui/ProfileMenu";
+import toast from "react-hot-toast";
+import useList from "@/hooks/useList";
 
 function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -16,7 +18,8 @@ function Header() {
   const closeMenuTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
     null,
   );
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
+  const list = useList(user?.uid);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -81,7 +84,19 @@ function Header() {
           <div style={{cursor: "not-allowed"}} className="header__link">Tv Shows</div>
           <div style={{cursor: "not-allowed"}} className="header__link">Movies</div>
           <Link href="/#trending" className="header__link">New & Popular</Link>
-          <Link href="/#my-list" className="header__link">My List</Link>
+          <button
+            className="header__link"
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              if (list.length === 0) {
+                toast("Add some movies to your list to view!", { icon: "🎬" });
+              } else {
+                window.location.href = "/#my-list";
+              }
+            }}
+          >
+            My List
+          </button>
         </ul>
       </div>
 
